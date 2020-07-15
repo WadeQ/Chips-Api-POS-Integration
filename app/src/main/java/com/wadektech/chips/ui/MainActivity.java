@@ -1,17 +1,27 @@
 package com.wadektech.chips.ui;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.wadektech.chips.R;
 import com.wadektech.chips.data.ChipToken;
 import com.wadektech.chips.data.remote.TokenRequestClient;
+
 import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         confirmTransaction = findViewById(R.id.result_confirm);
 
         confirmTransaction.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
                 downloadResponse();
@@ -42,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void downloadResponse(){
         materialDesignAnimatedDialog
                 .withTitle("CHOOSE PAYMENT")
@@ -60,7 +72,13 @@ public class MainActivity extends AppCompatActivity {
         materialDesignAnimatedDialog.show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void sendTokenRequestToServer(){
+        ProgressDialog dialog = new ProgressDialog(MainActivity.this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setTitle("Awaiting server response...");
+        dialog.setMessage("Please be patient as we process your request");
+        dialog.show();
         //grab token request
         String requestID = requestId.getText().toString().trim();
         String payeeRef = requestId.getText().toString().trim();
@@ -74,16 +92,23 @@ public class MainActivity extends AppCompatActivity {
                 .createPaymentTokenRequest(token);
         call.enqueue(new Callback<ChipToken>() {
             @Override
-            public void onResponse(@NotNull Call<ChipToken> call, Response<ChipToken> response) {
-                    String chipToken = String.valueOf(response.code());
-                    Timber.d("Response is successful %s", response.body());
-                    //Toast.makeText(getApplicationContext(), "response received is "+chipToken, Toast.LENGTH_LONG).show();
+            public void onResponse(@NotNull Call<ChipToken> call, @NotNull Response<ChipToken> response) {
+                dialog.dismiss();
+                String chipToken = null;
+                try {
+                    assert response.errorBody() != null;
+                    chipToken = response.errorBody().string();
+                    Timber.d("Response result %s", response.isSuccessful());
                     Intent intent = new Intent(getApplicationContext(), TokensDetailsActivity.class);
                     intent.putExtra("token",chipToken);
                     startActivity(intent);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             @Override
             public void onFailure(Call<ChipToken> call, @NotNull Throwable t) {
+                dialog.dismiss();
                 //display error type
                 Timber.d("Error sending token request %s", t.getMessage());
             }
