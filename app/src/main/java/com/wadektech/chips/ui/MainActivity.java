@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,10 +18,12 @@ import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.wadektech.chips.R;
 import com.wadektech.chips.data.ChipToken;
 import com.wadektech.chips.data.remote.TokenRequestClient;
+import com.wadektech.chips.utils.Constants;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,31 +83,26 @@ public class MainActivity extends AppCompatActivity {
         dialog.setMessage("Please be patient as we process your request");
         dialog.show();
         //grab token request
-        String requestID = requestId.getText().toString().trim();
-        String payeeRef = requestId.getText().toString().trim();
-        String desc = description.getText().toString().trim();
+        String requestID = "6d861ba6-67f6-450f-a0c8-fa39bb6f5033";
+        String payeeRef =  "20191003162400123";
+        String desc =  "Basket";
         //send chips token request to server
         //send token server response to details activity
-        ChipToken token = new ChipToken(requestID,1200L,payeeRef,desc,true);
+        ChipToken token = new ChipToken(requestID, (long) 199.99,payeeRef,desc,true);
         Call<ChipToken> call = TokenRequestClient
                 .getINSTANCE()
                 .getRequestToken()
-                .createPaymentTokenRequest(token);
+                .createPaymentTokenRequest(getAuthToken(),token);
         call.enqueue(new Callback<ChipToken>() {
             @Override
             public void onResponse(@NotNull Call<ChipToken> call, @NotNull Response<ChipToken> response) {
                 dialog.dismiss();
                 String chipToken = null;
-                try {
-                    assert response.errorBody() != null;
-                    chipToken = response.errorBody().string();
-                    Timber.d("Response result %s", response.isSuccessful());
-                    Intent intent = new Intent(getApplicationContext(), TokensDetailsActivity.class);
-                    intent.putExtra("token",chipToken);
-                    startActivity(intent);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                chipToken = String.valueOf(response.code());
+                Timber.d("Response result %s", response.code());
+                Intent intent = new Intent(getApplicationContext(), TokensDetailsActivity.class);
+                intent.putExtra("token",chipToken);
+                startActivity(intent);
             }
             @Override
             public void onFailure(Call<ChipToken> call, @NotNull Throwable t) {
@@ -113,5 +111,12 @@ public class MainActivity extends AppCompatActivity {
                 Timber.d("Error sending token request %s", t.getMessage());
             }
         });
+    }
+
+    //Construct and send basic auth headers
+    public static String getAuthToken() {
+        byte[] data;
+        data = (Constants.UUID + ":" + Constants.API_KEY).getBytes(StandardCharsets.UTF_8);
+        return " Basic " + Base64.encodeToString(data, Base64.NO_WRAP);
     }
 }
