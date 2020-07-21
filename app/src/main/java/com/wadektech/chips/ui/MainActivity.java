@@ -1,6 +1,5 @@
 package com.wadektech.chips.ui;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
@@ -9,10 +8,8 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.wadektech.chips.R;
@@ -22,12 +19,8 @@ import com.wadektech.chips.data.remote.myreq.ChipServiceImpl;
 import com.wadektech.chips.data.remote.myreq.TokenReqDto;
 import com.wadektech.chips.data.remote.myreq.TokenResDto;
 import com.wadektech.chips.utils.Constants;
-
 import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -132,15 +125,14 @@ public class MainActivity extends AppCompatActivity {
         req.setPayeeRefInfo("string");
         req.setRequestTokenImage(true);
         req.setTokenImageSize("SMALL");
-        String key = "Basic YzU4NTRlYTMtNTUyYi00ZDhkLThmZDAtZjllMzAwZmUyM2UxOjNjNDI1YWQ1LTVmYmItNDJjOC1hZTI2LTRmYWJhZjFmMThk";
+        String key = " Basic YzU4NTRlYTMtNTUyYi00ZDhkLThmZDAtZjllMzAwZmUyM2UxOjNjNDI1YWQ1LTVmYmItNDJjOC1hZTI2LTRmYWJhZjFmMThk";
         Call<TokenResDto> tokenResDtoCall = ChipServiceImpl.getINSTANCE().getChipService().createPayment(key,req);
         tokenResDtoCall.enqueue(new Callback<TokenResDto>() {
             @Override
-            public void onResponse(Call<TokenResDto> call, Response<TokenResDto> response) {
+            public void onResponse(@NotNull Call<TokenResDto> call, @NotNull Response<TokenResDto> response) {
                 dialog.dismiss();
                 assert response.body() != null;
-                Timber.i("resp: %s",response.body().toString());
-                TokenResDto data = response.body();
+                TokenResDto data = response.body().;
                 String encodedQr = data.getTokenImage();
 
                 Intent intent = new Intent(getApplicationContext(), TokensDetailsActivity.class);
