@@ -18,6 +18,9 @@ import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.wadektech.chips.R;
 import com.wadektech.chips.data.ChipToken;
 import com.wadektech.chips.data.remote.TokenRequestClient;
+import com.wadektech.chips.data.remote.myreq.ChipServiceImpl;
+import com.wadektech.chips.data.remote.myreq.TokenReqDto;
+import com.wadektech.chips.data.remote.myreq.TokenResDto;
 import com.wadektech.chips.utils.Constants;
 
 import org.jetbrains.annotations.NotNull;
@@ -69,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
                 .withEffect(Effectstype.Fall)
                 .setButton2Click(view -> materialDesignAnimatedDialog.dismiss())
                 .setButton1Click(view -> {
-                    sendTokenRequestToServer();
+                    fetchToken();
+//                    sendTokenRequestToServer();
                     materialDesignAnimatedDialog.dismiss();
                 });
         materialDesignAnimatedDialog.show();
@@ -111,6 +115,48 @@ public class MainActivity extends AppCompatActivity {
                 Timber.d("Error sending token request %s", t.getMessage());
             }
         });
+    }
+
+    public void fetchToken(){
+        ProgressDialog dialog = new ProgressDialog(MainActivity.this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setTitle("Awaiting server response...");
+        dialog.setMessage("Please be patient as we process your request");
+        dialog.show();
+        TokenReqDto req  = new TokenReqDto();
+        req.setRequestId("4d4fe9c8-cb5d-11ea-87d0-0242ac130003");
+        req.setDueDate("2020-07-21");
+        req.setDescription("string");
+        req.setExpiryTime("2020-07-21T20:28:08.112Z");
+        req.setAmount(0);
+        req.setPayeeRefInfo("string");
+        req.setRequestTokenImage(true);
+        req.setTokenImageSize("SMALL");
+        String key = "Basic YzU4NTRlYTMtNTUyYi00ZDhkLThmZDAtZjllMzAwZmUyM2UxOjNjNDI1YWQ1LTVmYmItNDJjOC1hZTI2LTRmYWJhZjFmMThk";
+        Call<TokenResDto> tokenResDtoCall = ChipServiceImpl.getINSTANCE().getChipService().createPayment(key,req);
+        tokenResDtoCall.enqueue(new Callback<TokenResDto>() {
+            @Override
+            public void onResponse(Call<TokenResDto> call, Response<TokenResDto> response) {
+                dialog.dismiss();
+                assert response.body() != null;
+                Timber.i("resp: %s",response.body().toString());
+                TokenResDto data = response.body();
+                String encodedQr = data.getTokenImage();
+
+                Intent intent = new Intent(getApplicationContext(), TokensDetailsActivity.class);
+                intent.putExtra("encoded_image",encodedQr);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<TokenResDto> call, Throwable t) {
+                dialog.dismiss();
+                Timber.i("token err: %s",t.getMessage());
+            }
+        });
+
+
+
     }
 
     //Construct and send basic auth headers
