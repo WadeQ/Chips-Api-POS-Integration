@@ -21,8 +21,11 @@ import timber.log.Timber;
 
 public class TokensDetailsActivity extends AppCompatActivity {
     ImageView qrCodeImage;
-    TextView responseText;
+    TextView responseText, mDesc, mDate;
     String encoded_image;
+    int amount;
+    String description;
+    String date;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -31,24 +34,31 @@ public class TokensDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tokens_details);
 
         qrCodeImage = findViewById(R.id.qr_image);
-        responseText = findViewById(R.id.tv_token_response);
+        responseText = findViewById(R.id.tv_token_amount);
+        mDesc = findViewById(R.id.tv_token_desc);
+        mDate = findViewById(R.id.tv_token_date);
 
         //grab token from intent
         Intent intent = getIntent();
         encoded_image = intent.getStringExtra("encoded_image");
+        amount = intent.getIntExtra("amount",0);
+        description = intent.getStringExtra("description");
+        date = intent.getStringExtra("date");
         assert encoded_image!= null;
         Bitmap image = decodeImage(encoded_image);
         qrCodeImage.setImageBitmap(image);
         Toast.makeText(getBaseContext(), "qr code success", Toast.LENGTH_SHORT).show();
 
-//       responseText.setText("Response code is: "+token);
+       responseText.setText("Amount: "+amount);
+       mDate.setText("Date: "+date);
+       mDesc.setText("Description: "+description);
+
     }
 
     private Bitmap decodeImage(String baseString) {
         if (baseString == null) return null;
         try {
             String imageDataBytes = baseString.substring(baseString.indexOf(",") + 1);
-
             InputStream stream = new ByteArrayInputStream(Base64.decode(imageDataBytes.getBytes(), Base64.DEFAULT));
             return BitmapFactory.decodeStream(stream);
         } catch (Exception e) {

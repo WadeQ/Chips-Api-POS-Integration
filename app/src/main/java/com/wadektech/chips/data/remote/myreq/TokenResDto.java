@@ -1,6 +1,9 @@
 package com.wadektech.chips.data.remote.myreq;
 
-public class TokenResDto {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class TokenResDto implements Parcelable {
     private String uuid;
 
     private String requestId;
@@ -31,6 +34,58 @@ public class TokenResDto {
 
     public TokenResDto() {
     }
+
+    protected TokenResDto(Parcel in) {
+        uuid = in.readString();
+        requestId = in.readString();
+        created = in.readString();
+        lastModified = in.readString();
+        dueDate = in.readString();
+        description = in.readString();
+        expiryTime = in.readString();
+        amount = in.readInt();
+        payeeRefInfo = in.readString();
+        requestTip = in.readByte() != 0;
+        useOnce = in.readByte() != 0;
+        status = in.readString();
+        tokenId = in.readString();
+        tokenImage = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uuid);
+        dest.writeString(requestId);
+        dest.writeString(created);
+        dest.writeString(lastModified);
+        dest.writeString(dueDate);
+        dest.writeString(description);
+        dest.writeString(expiryTime);
+        dest.writeInt(amount);
+        dest.writeString(payeeRefInfo);
+        dest.writeByte((byte) (requestTip ? 1 : 0));
+        dest.writeByte((byte) (useOnce ? 1 : 0));
+        dest.writeString(status);
+        dest.writeString(tokenId);
+        dest.writeString(tokenImage);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<TokenResDto> CREATOR = new Creator<TokenResDto>() {
+        @Override
+        public TokenResDto createFromParcel(Parcel in) {
+            return new TokenResDto(in);
+        }
+
+        @Override
+        public TokenResDto[] newArray(int size) {
+            return new TokenResDto[size];
+        }
+    };
 
     public String getUuid() {
         return uuid;
