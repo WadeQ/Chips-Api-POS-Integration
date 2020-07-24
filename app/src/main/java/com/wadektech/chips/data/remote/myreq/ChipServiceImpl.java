@@ -7,10 +7,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ChipServiceImpl {
-    private static final String BASE_URL = "https://tar.qa.tlsag.net/gate/api/v1.0/";
+    private static final String BASE_URL = "https://tar.qa.tlsag.net/gate/api/";
     private Retrofit retrofit;
     private static ChipServiceImpl INSTANCE;
-
 
     private ChipServiceImpl(){
         Gson gson = new GsonBuilder()

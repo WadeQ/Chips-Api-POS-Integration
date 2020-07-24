@@ -41,18 +41,48 @@
                     android:layout_marginBottom="8dp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_token_response"
+                android:id="@+id/tv_token_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="1dp"
+                android:text="Amount $358"
+                android:padding="8dp"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_token_desc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="1dp"
-                    android:text="Amount $358"
+                    android:text="Basket"
                     android:padding="8dp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_token_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="1dp"
+                    android:text="22-12-12"
+                    android:padding="8dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
