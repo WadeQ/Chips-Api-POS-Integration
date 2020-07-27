@@ -1,9 +1,10 @@
-package com.wadektech.chips.data.remote.myreq;
+package com.wadektech.chips.data.remote;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ChipServiceImpl {
@@ -17,6 +18,7 @@ public class ChipServiceImpl {
                 .create();
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }

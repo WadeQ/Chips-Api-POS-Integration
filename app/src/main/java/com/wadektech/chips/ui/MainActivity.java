@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import androidx.annotation.RequiresApi;
@@ -13,17 +12,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.wadektech.chips.R;
-import com.wadektech.chips.data.remote.myreq.ChipServiceImpl;
-import com.wadektech.chips.data.remote.myreq.TokenReqDto;
-import com.wadektech.chips.data.remote.myreq.TokenResDto;
+import com.wadektech.chips.data.remote.ChipServiceImpl;
+import com.wadektech.chips.data.remote.models.TokenReqDto;
+import com.wadektech.chips.data.remote.models.TokenResDto;
 import com.wadektech.chips.utils.Constants;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
@@ -64,21 +62,62 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void fetchToken(){
-        ProgressDialog dialog = new ProgressDialog(MainActivity.this);
+        ProgressDialog dialog = new ProgressDialog(MainActivity.this, R.style.DialogStyle);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setTitle("Awaiting server response...");
         dialog.setMessage("Please be patient as we process your request");
         dialog.show();
         TokenReqDto req  = new TokenReqDto();
         req.setRequestId("string");
-        req.setDueDate("2020-07-24");
+        req.setDueDate("2020-07-26");
         req.setDescription("string");
-        req.setExpiryTime("2020-07-25T10:12:59.403Z");
+        req.setExpiryTime("2020-07-27T10:12:59.403Z");
         req.setAmount(0);
         req.setPayeeRefInfo("string");
         req.setRequestTokenImage(true);
         req.setTokenImageSize("SMALL");
         String key = " Basic YzU4NTRlYTMtNTUyYi00ZDhkLThmZDAtZjllMzAwZmUyM2UxOjNjNDI1YWQ1LTVmYmItNDJjOC1hZTI2LTRmYWJhZjFmMWY4ZA==";
+
+        Observable<TokenResDto> tokenResDtoObservable = ChipServiceImpl.getINSTANCE().getChipService().createPayment(key,req);
+        tokenResDtoObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Observer<TokenResDto>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(TokenResDto tokenResDto) {
+                    dialog.dismiss();
+                        Timber.d("Response status code is %s", tokenResDto.getStatus());
+                        String encodedQr = tokenResDto.getTokenImage();
+                        int amount = tokenResDto.getAmount();
+                        String description = tokenResDto.getDescription();
+                        String date = tokenResDto.getDueDate();
+                        Intent intent = new Intent(getApplicationContext(), TokensDetailsActivity.class);
+                        intent.putExtra("encoded_image",encodedQr);
+                        intent.putExtra("description",description);
+                        intent.putExtra("date",date);
+                        intent.putExtra("amount",amount);
+                        startActivity(intent);
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        dialog.dismiss();
+                        Timber.d("Response error status is %s", e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dialog.dismiss();
+
+                    }
+                });
+      /*
         Call<TokenResDto> tokenResDtoCall = ChipServiceImpl.getINSTANCE().getChipService().createPayment(key,req);
         tokenResDtoCall.enqueue(new Callback<TokenResDto>() {
             @Override
@@ -94,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                **/
+
                 String encodedQr = data.getTokenImage();
                 int amount = data.getAmount();
                 String description = data.getDescription();
@@ -113,6 +152,8 @@ public class MainActivity extends AppCompatActivity {
                 Timber.i("token err: %s",t.getMessage());
             }
         });
+        **/
+
     }
 
     //Construct and send basic auth headers

@@ -1,6 +1,9 @@
-package com.wadektech.chips.data.remote.myreq;
+package com.wadektech.chips.data.remote;
 
-import retrofit2.Call;
+import com.wadektech.chips.data.remote.models.TokenReqDto;
+import com.wadektech.chips.data.remote.models.TokenResDto;
+
+import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -10,7 +13,7 @@ public interface ChipService {
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @POST("v1.0/payments/requests")
-    Call<TokenResDto> createPayment(
+    Observable<TokenResDto> createPayment(
             @Header("Authorization") String authKey,
             @Body TokenReqDto tokenReqDto
     );

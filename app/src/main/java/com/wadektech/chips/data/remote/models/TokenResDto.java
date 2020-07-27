@@ -1,4 +1,4 @@
-package com.wadektech.chips.data.remote.myreq;
+package com.wadektech.chips.data.remote.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

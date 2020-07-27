@@ -1,4 +1,4 @@
-package com.wadektech.chips.data.remote.myreq;
+package com.wadektech.chips.data.remote.models;
 
 
 import com.google.gson.annotations.SerializedName;
