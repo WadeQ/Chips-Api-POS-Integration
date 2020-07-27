@@ -1,4 +1,4 @@
-package com.wadektech.chips.data.remote.myreq;
+package com.wadektech.chips.data.remote;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

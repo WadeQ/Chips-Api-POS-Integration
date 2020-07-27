@@ -9,14 +9,10 @@ import android.util.Base64;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.wadektech.chips.R;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-
 import timber.log.Timber;
 
 public class TokensDetailsActivity extends AppCompatActivity {

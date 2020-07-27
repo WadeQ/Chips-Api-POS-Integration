@@ -12,9 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.wadektech.chips.R;
-import com.wadektech.chips.data.remote.myreq.ChipServiceImpl;
-import com.wadektech.chips.data.remote.myreq.TokenReqDto;
-import com.wadektech.chips.data.remote.myreq.TokenResDto;
+import com.wadektech.chips.data.remote.ChipServiceImpl;
+import com.wadektech.chips.data.remote.models.TokenReqDto;
+import com.wadektech.chips.data.remote.models.TokenResDto;
 import com.wadektech.chips.utils.Constants;
 import java.nio.charset.StandardCharsets;
 import io.reactivex.Observable;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void fetchToken(){
-        ProgressDialog dialog = new ProgressDialog(MainActivity.this);
+        ProgressDialog dialog = new ProgressDialog(MainActivity.this, R.style.DialogStyle);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setTitle("Awaiting server response...");
         dialog.setMessage("Please be patient as we process your request");

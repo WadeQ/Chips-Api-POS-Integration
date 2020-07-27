@@ -1,7 +1,9 @@
-package com.wadektech.chips.data.remote.myreq;
+package com.wadektech.chips.data.remote;
+
+import com.wadektech.chips.data.remote.models.TokenReqDto;
+import com.wadektech.chips.data.remote.models.TokenResDto;
 
 import io.reactivex.Observable;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
