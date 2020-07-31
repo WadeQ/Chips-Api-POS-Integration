@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "642379777812",
+    "firebase_url": "https://chips-d4dae.firebaseio.com",
+    "project_id": "chips-d4dae",
+    "storage_bucket": "chips-d4dae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642379777812:android:c3af4d10eef4e3128aa401",
+        "android_client_info": {
+          "package_name": "com.wadektech.chips"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642379777812-8e2h854miiq7v9h9kuqht5ft2dqvta8e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRqNmz_B8_qJw9X_U1B6g5OSDGJ4Ns0mw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "642379777812-8e2h854miiq7v9h9kuqht5ft2dqvta8e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,7 +8,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ChipServiceImpl {
-    private static final String BASE_URL = "https://tar.qa.tlsag.net/gate/api/";
+    private static final String BASE_URL = "https://tar.int.tlsag.net/api/v1.0/";
     private Retrofit retrofit;
     private static ChipServiceImpl INSTANCE;
 

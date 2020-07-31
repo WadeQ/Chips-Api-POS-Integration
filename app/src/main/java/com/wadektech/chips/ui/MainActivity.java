@@ -68,12 +68,20 @@ public class MainActivity extends AppCompatActivity {
         dialog.setMessage("Please be patient as we process your request");
         dialog.show();
         TokenReqDto req  = new TokenReqDto();
-        req.setRequestId("string");
-        req.setDueDate("2020-07-26");
+        req.setRequestId("test234");
+        req.setDueDate("2020-07-31");
         req.setDescription("string");
-        req.setExpiryTime("2020-07-27T10:12:59.403Z");
-        req.setAmount(0);
+        req.setExpiryTime("2020-08-01T09:05:41.366Z");
+        req.setAmount(2000);
         req.setPayeeRefInfo("string");
+        req.setPayeeCategory1("string");
+        req.setPayeeCategory2("string");
+        req.setPayeeCategory3("string");
+        req.setSiteName("string");
+        req.setSiteRefInfo("string");
+        req.setRequestTip(false);
+        req.setUseOnce(true);
+        req.setNotifyUrl("https://us-central1-chips-d4dae.cloudfunctions.net/updateStatus");
         req.setRequestTokenImage(true);
         req.setTokenImageSize("SMALL");
         String key = " Basic YzU4NTRlYTMtNTUyYi00ZDhkLThmZDAtZjllMzAwZmUyM2UxOjNjNDI1YWQ1LTVmYmItNDJjOC1hZTI2LTRmYWJhZjFmMWY4ZA==";
@@ -94,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                         Timber.d("Response status code is %s", tokenResDto.getStatus());
                         String encodedQr = tokenResDto.getTokenImage();
                         int amount = tokenResDto.getAmount();
-                        String description = tokenResDto.getDescription();
+                        String description = tokenResDto.getStatus();
                         String date = tokenResDto.getDueDate();
                         Intent intent = new Intent(getApplicationContext(), TokensDetailsActivity.class);
                         intent.putExtra("encoded_image",encodedQr);
@@ -117,42 +125,6 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-      /*
-        Call<TokenResDto> tokenResDtoCall = ChipServiceImpl.getINSTANCE().getChipService().createPayment(key,req);
-        tokenResDtoCall.enqueue(new Callback<TokenResDto>() {
-            @Override
-            public void onResponse(@NotNull Call<TokenResDto> call, @NotNull Response<TokenResDto> response) {
-                dialog.dismiss();
-                assert response.body() != null;
-                TokenResDto data = response.body();
-                Timber.d("Response status code is %s", response.code());
-                /*
-                try {
-                    assert response.errorBody() != null;
-                    Timber.d("Response error body is %s", response.errorBody().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                String encodedQr = data.getTokenImage();
-                int amount = data.getAmount();
-                String description = data.getDescription();
-                String date = data.getDueDate();
-                Intent intent = new Intent(getApplicationContext(), TokensDetailsActivity.class);
-                intent.putExtra("encoded_image",encodedQr);
-                intent.putExtra("description",description);
-                intent.putExtra("date",date);
-                intent.putExtra("amount",amount);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<TokenResDto> call, @NotNull Throwable t) {
-                dialog.dismiss();
-                Timber.i("token err: %s",t.getMessage());
-            }
-        });
-        **/
 
     }
 
