@@ -1,31 +1,57 @@
 package com.wadektech.chips.data.remote.models;
 
-
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class TokenReqDto {
+    @SerializedName("requestId")
+    @Expose
     private String requestId;
+    @SerializedName("dueDate")
+    @Expose
     private String dueDate;
+    @SerializedName("description")
+    @Expose
     private String description;
+    @SerializedName("expiryTime")
+    @Expose
     private String expiryTime;
-    private int amount;
+    @SerializedName("amount")
+    @Expose
+    private Integer amount;
+    @SerializedName("payeeCategory1")
+    @Expose
+    private String payeeCategory1;
+    @SerializedName("payeeCategory2")
+    @Expose
+    private String payeeCategory2;
+    @SerializedName("payeeCategory3")
+    @Expose
+    private String payeeCategory3;
+    @SerializedName("payeeRefInfo")
+    @Expose
     private String payeeRefInfo;
-    private boolean requestTokenImage;
+    @SerializedName("siteName")
+    @Expose
+    private String siteName;
+    @SerializedName("siteRefInfo")
+    @Expose
+    private String siteRefInfo;
+    @SerializedName("requestTip")
+    @Expose
+    private Boolean requestTip;
+    @SerializedName("useOnce")
+    @Expose
+    private Boolean useOnce;
+    @SerializedName("notifyUrl")
+    @Expose
+    private String notifyUrl;
+    @SerializedName("requestTokenImage")
+    @Expose
+    private Boolean requestTokenImage;
+    @SerializedName("tokenImageSize")
+    @Expose
     private String tokenImageSize;
-
-    public TokenReqDto() {
-    }
-
-    public TokenReqDto(String requestId, String dueDate, String description, String expiryTime, int amount, String payeeRefInfo, boolean requestTokenImage, String tokenImageSize) {
-        this.requestId = requestId;
-        this.dueDate = dueDate;
-        this.description = description;
-        this.expiryTime = expiryTime;
-        this.amount = amount;
-        this.payeeRefInfo = payeeRefInfo;
-        this.requestTokenImage = requestTokenImage;
-        this.tokenImageSize = tokenImageSize;
-    }
 
     public String getRequestId() {
         return requestId;
@@ -59,12 +85,36 @@ public class TokenReqDto {
         this.expiryTime = expiryTime;
     }
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public String getPayeeCategory1() {
+        return payeeCategory1;
+    }
+
+    public void setPayeeCategory1(String payeeCategory1) {
+        this.payeeCategory1 = payeeCategory1;
+    }
+
+    public String getPayeeCategory2() {
+        return payeeCategory2;
+    }
+
+    public void setPayeeCategory2(String payeeCategory2) {
+        this.payeeCategory2 = payeeCategory2;
+    }
+
+    public String getPayeeCategory3() {
+        return payeeCategory3;
+    }
+
+    public void setPayeeCategory3(String payeeCategory3) {
+        this.payeeCategory3 = payeeCategory3;
     }
 
     public String getPayeeRefInfo() {
@@ -75,11 +125,51 @@ public class TokenReqDto {
         this.payeeRefInfo = payeeRefInfo;
     }
 
-    public boolean isRequestTokenImage() {
+    public String getSiteName() {
+        return siteName;
+    }
+
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
+    }
+
+    public String getSiteRefInfo() {
+        return siteRefInfo;
+    }
+
+    public void setSiteRefInfo(String siteRefInfo) {
+        this.siteRefInfo = siteRefInfo;
+    }
+
+    public Boolean getRequestTip() {
+        return requestTip;
+    }
+
+    public void setRequestTip(Boolean requestTip) {
+        this.requestTip = requestTip;
+    }
+
+    public Boolean getUseOnce() {
+        return useOnce;
+    }
+
+    public void setUseOnce(Boolean useOnce) {
+        this.useOnce = useOnce;
+    }
+
+    public String getNotifyUrl() {
+        return notifyUrl;
+    }
+
+    public void setNotifyUrl(String notifyUrl) {
+        this.notifyUrl = notifyUrl;
+    }
+
+    public Boolean getRequestTokenImage() {
         return requestTokenImage;
     }
 
-    public void setRequestTokenImage(boolean requestTokenImage) {
+    public void setRequestTokenImage(Boolean requestTokenImage) {
         this.requestTokenImage = requestTokenImage;
     }
 
@@ -90,4 +180,5 @@ public class TokenReqDto {
     public void setTokenImageSize(String tokenImageSize) {
         this.tokenImageSize = tokenImageSize;
     }
+
 }

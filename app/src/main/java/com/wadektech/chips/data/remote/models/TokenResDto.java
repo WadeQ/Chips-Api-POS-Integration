@@ -3,36 +3,92 @@ package com.wadektech.chips.data.remote.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class TokenResDto implements Parcelable {
+    @SerializedName("uuid")
+    @Expose
     private String uuid;
-
+    @SerializedName("requestId")
+    @Expose
     private String requestId;
-
+    @SerializedName("created")
+    @Expose
     private String created;
-
+    @SerializedName("lastModified")
+    @Expose
     private String lastModified;
-
+    @SerializedName("dueDate")
+    @Expose
     private String dueDate;
-
+    @SerializedName("description")
+    @Expose
     private String description;
-
+    @SerializedName("expiryTime")
+    @Expose
     private String expiryTime;
-
-    private int amount;
-
+    @SerializedName("amount")
+    @Expose
+    private Integer amount;
+    @SerializedName("payeeCategory1")
+    @Expose
+    private String payeeCategory1;
+    @SerializedName("payeeCategory2")
+    @Expose
+    private String payeeCategory2;
+    @SerializedName("payeeCategory3")
+    @Expose
+    private String payeeCategory3;
+    @SerializedName("payeeRefInfo")
+    @Expose
     private String payeeRefInfo;
-
-    private boolean requestTip;
-
-    private boolean useOnce;
-
+    @SerializedName("siteName")
+    @Expose
+    private String siteName;
+    @SerializedName("siteRefInfo")
+    @Expose
+    private String siteRefInfo;
+    @SerializedName("requestTip")
+    @Expose
+    private Boolean requestTip;
+    @SerializedName("useOnce")
+    @Expose
+    private Boolean useOnce;
+    @SerializedName("status")
+    @Expose
     private String status;
-
+    @SerializedName("tokenId")
+    @Expose
     private String tokenId;
-
+    @SerializedName("tokenImage")
+    @Expose
     private String tokenImage;
 
-    public TokenResDto() {
+    public TokenResDto(String uuid, String requestId, String created, String lastModified, String dueDate,
+                       String description, String expiryTime, Integer amount, String payeeCategory1,
+                       String payeeCategory2, String payeeCategory3, String payeeRefInfo, String siteName,
+                       String siteRefInfo, Boolean requestTip, Boolean useOnce, String status, String tokenId,
+                       String tokenImage) {
+        this.uuid = uuid;
+        this.requestId = requestId;
+        this.created = created;
+        this.lastModified = lastModified;
+        this.dueDate = dueDate;
+        this.description = description;
+        this.expiryTime = expiryTime;
+        this.amount = amount;
+        this.payeeCategory1 = payeeCategory1;
+        this.payeeCategory2 = payeeCategory2;
+        this.payeeCategory3 = payeeCategory3;
+        this.payeeRefInfo = payeeRefInfo;
+        this.siteName = siteName;
+        this.siteRefInfo = siteRefInfo;
+        this.requestTip = requestTip;
+        this.useOnce = useOnce;
+        this.status = status;
+        this.tokenId = tokenId;
+        this.tokenImage = tokenImage;
     }
 
     protected TokenResDto(Parcel in) {
@@ -43,10 +99,21 @@ public class TokenResDto implements Parcelable {
         dueDate = in.readString();
         description = in.readString();
         expiryTime = in.readString();
-        amount = in.readInt();
+        if (in.readByte() == 0) {
+            amount = null;
+        } else {
+            amount = in.readInt();
+        }
+        payeeCategory1 = in.readString();
+        payeeCategory2 = in.readString();
+        payeeCategory3 = in.readString();
         payeeRefInfo = in.readString();
-        requestTip = in.readByte() != 0;
-        useOnce = in.readByte() != 0;
+        siteName = in.readString();
+        siteRefInfo = in.readString();
+        byte tmpRequestTip = in.readByte();
+        requestTip = tmpRequestTip == 0 ? null : tmpRequestTip == 1;
+        byte tmpUseOnce = in.readByte();
+        useOnce = tmpUseOnce == 0 ? null : tmpUseOnce == 1;
         status = in.readString();
         tokenId = in.readString();
         tokenImage = in.readString();
@@ -61,10 +128,20 @@ public class TokenResDto implements Parcelable {
         dest.writeString(dueDate);
         dest.writeString(description);
         dest.writeString(expiryTime);
-        dest.writeInt(amount);
+        if (amount == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(amount);
+        }
+        dest.writeString(payeeCategory1);
+        dest.writeString(payeeCategory2);
+        dest.writeString(payeeCategory3);
         dest.writeString(payeeRefInfo);
-        dest.writeByte((byte) (requestTip ? 1 : 0));
-        dest.writeByte((byte) (useOnce ? 1 : 0));
+        dest.writeString(siteName);
+        dest.writeString(siteRefInfo);
+        dest.writeByte((byte) (requestTip == null ? 0 : requestTip ? 1 : 2));
+        dest.writeByte((byte) (useOnce == null ? 0 : useOnce ? 1 : 2));
         dest.writeString(status);
         dest.writeString(tokenId);
         dest.writeString(tokenImage);
@@ -91,132 +168,75 @@ public class TokenResDto implements Parcelable {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
     public String getRequestId() {
         return requestId;
-    }
-
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
     }
 
     public String getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
     public String getLastModified() {
         return lastModified;
-    }
-
-    public void setLastModified(String lastModified) {
-        this.lastModified = lastModified;
     }
 
     public String getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
-        this.dueDate = dueDate;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getExpiryTime() {
         return expiryTime;
     }
 
-    public void setExpiryTime(String expiryTime) {
-        this.expiryTime = expiryTime;
-    }
-
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public String getPayeeCategory1() {
+        return payeeCategory1;
+    }
+
+    public String getPayeeCategory2() {
+        return payeeCategory2;
+    }
+
+    public String getPayeeCategory3() {
+        return payeeCategory3;
     }
 
     public String getPayeeRefInfo() {
         return payeeRefInfo;
     }
 
-    public void setPayeeRefInfo(String payeeRefInfo) {
-        this.payeeRefInfo = payeeRefInfo;
+    public String getSiteName() {
+        return siteName;
     }
 
-    public boolean isRequestTip() {
+    public String getSiteRefInfo() {
+        return siteRefInfo;
+    }
+
+    public Boolean getRequestTip() {
         return requestTip;
     }
 
-    public void setRequestTip(boolean requestTip) {
-        this.requestTip = requestTip;
-    }
-
-    public boolean isUseOnce() {
+    public Boolean getUseOnce() {
         return useOnce;
-    }
-
-    public void setUseOnce(boolean useOnce) {
-        this.useOnce = useOnce;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getTokenId() {
         return tokenId;
     }
 
-    public void setTokenId(String tokenId) {
-        this.tokenId = tokenId;
-    }
-
     public String getTokenImage() {
         return tokenImage;
-    }
-
-    public void setTokenImage(String tokenImage) {
-        this.tokenImage = tokenImage;
-    }
-
-
-    @Override
-    public String toString() {
-        return "TokenResDto{" +
-                "uuid='" + uuid + '\'' +
-                ", requestId='" + requestId + '\'' +
-                ", created='" + created + '\'' +
-                ", lastModified='" + lastModified + '\'' +
-                ", dueDate='" + dueDate + '\'' +
-                ", description='" + description + '\'' +
-                ", expiryTime='" + expiryTime + '\'' +
-                ", amount=" + amount +
-                ", payeeRefInfo='" + payeeRefInfo + '\'' +
-                ", requestTip=" + requestTip +
-                ", useOnce=" + useOnce +
-                ", status='" + status + '\'' +
-                ", tokenId='" + tokenId + '\'' +
-                ", tokenImage='" + tokenImage + '\'' +
-                '}';
     }
 }
