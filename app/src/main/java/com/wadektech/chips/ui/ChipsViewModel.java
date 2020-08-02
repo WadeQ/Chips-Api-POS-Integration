@@ -2,12 +2,13 @@ package com.wadektech.chips.ui;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.paging.PagedList;
+
 import com.wadektech.chips.data.RemoteRepository;
 import com.wadektech.chips.data.local.models.PaymentDetails;
-import java.util.List;
 
 public class ChipsViewModel extends ViewModel {
-    private final LiveData<List<PaymentDetails>> paymentDetailsList;
+    private final LiveData<PagedList<PaymentDetails>> paymentDetailsList;
     public static RemoteRepository remoteRepository;
 
     public ChipsViewModel() {
@@ -15,7 +16,7 @@ public class ChipsViewModel extends ViewModel {
         paymentDetailsList = RemoteRepository.getPaymentDetailsFromRemote();
     }
 
-    public LiveData<List<PaymentDetails>> getPaymentDetails() {
+    public LiveData<PagedList<PaymentDetails>> getPaymentDetails() {
         return paymentDetailsList;
     }
 }

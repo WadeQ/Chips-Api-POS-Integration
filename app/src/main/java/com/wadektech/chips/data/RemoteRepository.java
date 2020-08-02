@@ -3,6 +3,8 @@ package com.wadektech.chips.data;
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 
 import com.wadektech.chips.App;
 import com.wadektech.chips.data.local.ChipsRoomDatabase;
@@ -23,7 +25,7 @@ import timber.log.Timber;
 public class RemoteRepository {
     private static final Object LOCK = new Object();
     private static RemoteRepository sInstance;
-    private SingleLiveEvent<List<PaymentDetails>> paymentLp;
+    private SingleLiveEvent<List<PaymentDetails>> paymentList;
 
     public synchronized static RemoteRepository getInstance() {
         if (sInstance == null) {
@@ -73,11 +75,17 @@ public class RemoteRepository {
                 });
     }
 
-    public static LiveData<List<PaymentDetails>> getPaymentDetailsFromRemote() {
-                    ChipsRoomDatabase
-                            .getInstance(App.getContext().getApplicationContext())
-                            .paymentDetailsDao()
-                            .getAllPaymentDetails();
-                    return
+    public static LiveData<PagedList<PaymentDetails>> getPaymentDetailsFromRemote() {
+        PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
+                .setPageSize(30)
+                .setPrefetchDistance(5)
+                .build());
+        return new LivePagedListBuilder<>(
+                ChipsRoomDatabase
+                        .getInstance(App.getContext().getApplicationContext())
+                        .paymentDetailsDao()
+                        .getAllPaymentDetails(),
+                        pagedListConfig)
+                .build();
     }
 }
