@@ -14,7 +14,7 @@ import java.util.List;
 public interface PaymentDetailsDao {
 
     @Query("SELECT * FROM payment_details ORDER BY date DESC")
-    List<PaymentDetails> getAllPaymentDetails();
+    DataSource.Factory<Integer, PaymentDetails> getAllPaymentDetails();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void savePaymentDetails(List<PaymentDetails> list);
