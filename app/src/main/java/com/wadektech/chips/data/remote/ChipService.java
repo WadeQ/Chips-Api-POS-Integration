@@ -11,7 +11,7 @@ import retrofit2.http.POST;
 public interface ChipService {
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
-    @POST("pos/payments/requests")
+    @POST("payments/requests")
     Observable<TokenResDto> createPayment(
             @Header("Authorization") String authKey,
             @Body TokenReqDto tokenReqDto

@@ -13,6 +13,9 @@ import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.wadektech.chips.R;
 import com.wadektech.chips.data.remote.ChipServiceImpl;
+import com.wadektech.chips.data.remote.MerchantPaymentApiServiceImpl;
+import com.wadektech.chips.data.remote.models.PaymentNotificationReq;
+import com.wadektech.chips.data.remote.models.PaymentNotificationRes;
 import com.wadektech.chips.data.remote.models.TokenReqDto;
 import com.wadektech.chips.data.remote.models.TokenResDto;
 import com.wadektech.chips.utils.Constants;
@@ -69,9 +72,9 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
         TokenReqDto req  = new TokenReqDto();
         req.setRequestId("test234");
-        req.setDueDate("2020-07-31");
+        req.setDueDate("2020-08-01");
         req.setDescription("string");
-        req.setExpiryTime("2020-08-01T09:05:41.366Z");
+        req.setExpiryTime("2020-08-02T09:05:41.366Z");
         req.setAmount(2000);
         req.setPayeeRefInfo("string");
         req.setPayeeCategory1("string");
@@ -86,7 +89,10 @@ public class MainActivity extends AppCompatActivity {
         req.setTokenImageSize("SMALL");
         String key = " Basic YzU4NTRlYTMtNTUyYi00ZDhkLThmZDAtZjllMzAwZmUyM2UxOjNjNDI1YWQ1LTVmYmItNDJjOC1hZTI2LTRmYWJhZjFmMWY4ZA==";
 
-        Observable<TokenResDto> tokenResDtoObservable = ChipServiceImpl.getINSTANCE().getChipService().createPayment(key,req);
+        Observable<TokenResDto> tokenResDtoObservable = ChipServiceImpl
+                .getINSTANCE()
+                .getChipService()
+                .createPayment(key,req);
         tokenResDtoObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
@@ -125,7 +131,47 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+    }
 
+    public void getPaymentNotification(){
+        ProgressDialog dialog = new ProgressDialog(MainActivity.this, R.style.DialogStyle);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setTitle("Awaiting server response...");
+        dialog.setMessage("Please be patient as we process your payment request");
+        dialog.show();
+        PaymentNotificationReq paymentNotificationReq = new PaymentNotificationReq();
+        String key = " Basic YzU4NTRlYTMtNTUyYi00ZDhkLThmZDAtZjllMzAwZmUyM2UxOjNjNDI1YWQ1LTVmYmItNDJjOC1hZTI2LTRmYWJhZjFmMWY4ZA==";
+
+        Observable<PaymentNotificationRes> paymentNotificationResObservable = MerchantPaymentApiServiceImpl
+                .getINSTANCE()
+                .getMerchantPaymentNotification()
+                .notifyPaymentCompletion(key,paymentNotificationReq);
+        paymentNotificationResObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Observer<PaymentNotificationRes>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onNext(PaymentNotificationRes paymentNotificationRes) {
+                        dialog.dismiss();
+                        //TO-DO implementation for successful payment request
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        dialog.dismiss();
+                        Timber.d("Response error status for payment is %s", e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     //Construct and send basic auth headers
