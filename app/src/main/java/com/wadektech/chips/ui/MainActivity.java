@@ -14,8 +14,10 @@ import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.wadektech.chips.R;
 import com.wadektech.chips.data.remote.ChipServiceImpl;
 import com.wadektech.chips.data.remote.MerchantPaymentApiServiceImpl;
+import com.wadektech.chips.data.remote.RequestByTokenServiceImpl;
 import com.wadektech.chips.data.remote.models.PaymentNotificationReq;
 import com.wadektech.chips.data.remote.models.PaymentNotificationRes;
+import com.wadektech.chips.data.remote.models.PaymentRequestByTokenId;
 import com.wadektech.chips.data.remote.models.TokenReqDto;
 import com.wadektech.chips.data.remote.models.TokenResDto;
 import com.wadektech.chips.utils.Constants;
@@ -165,6 +167,46 @@ public class MainActivity extends AppCompatActivity {
                     public void onError(Throwable e) {
                         dialog.dismiss();
                         Timber.d("Response error status for payment is %s", e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void getPaymentRequestDetailsByTokenId(){
+        ProgressDialog dialog = new ProgressDialog(MainActivity.this, R.style.DialogStyle);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setTitle("Awaiting server response...");
+        dialog.setMessage("Please be patient as we process your payment request");
+        dialog.show();
+        String tokenId = "YzU4NTRlxOjNjNDI1YWQ1LTVmYmItNDJjOC1hZTI2LTRmYWJhZjFmMW";
+        Observable<PaymentRequestByTokenId> paymentRequestByTokenIdObservable = RequestByTokenServiceImpl
+                .getINSTANCE()
+                .getPaymentRequestByTokenID()
+                .requestPaymentByTokenID(tokenId);
+        paymentRequestByTokenIdObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Observer<PaymentRequestByTokenId>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onNext(PaymentRequestByTokenId paymentRequestByTokenId) {
+                        dialog.dismiss();
+                        //TO-DO implementation for the token request using token id
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        dialog.dismiss();
+                        Timber.d("Response error status for request by token id is %s", e.getMessage());
                     }
 
                     @Override
