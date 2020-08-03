@@ -1,20 +1,18 @@
 package com.wadektech.chips.data;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
-import com.wadektech.chips.App;
-import com.wadektech.chips.data.local.ChipsRoomDatabase;
+import com.wadektech.chips.data.local.models.TransactionDetails;
+import com.wadektech.chips.data.remote.source.TransactionDetailsServiceImpl;
+import com.wadektech.chips.utils.App;
+import com.wadektech.chips.data.local.source.ChipsRoomDatabase;
 import com.wadektech.chips.data.local.models.PaymentDetails;
-import com.wadektech.chips.data.remote.PaymentDetailsServiceImpl;
-import com.wadektech.chips.ui.ChipsAppExecutors;
+import com.wadektech.chips.data.remote.source.PaymentDetailsServiceImpl;
+import com.wadektech.chips.utils.ChipsAppExecutors;
 import com.wadektech.chips.utils.SingleLiveEvent;
-
 import java.util.List;
-
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -45,14 +43,14 @@ public class RemoteRepository {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
-                .subscribe(new Observer<PaymentDetails>() {
+                .subscribe(new Observer<List<PaymentDetails>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(PaymentDetails paymentDetails) {
+                    public void onNext(List<PaymentDetails> paymentDetailsList) {
                         ChipsAppExecutors
                                 .getInstance()
                                 .getDiskIO()
@@ -75,6 +73,45 @@ public class RemoteRepository {
                 });
     }
 
+    public void fetchTransactionDetailsFromRemote(){
+        Observable<List<TransactionDetails>> transactionDetailsObservable = TransactionDetailsServiceImpl
+                .getINSTANCE()
+                .getTransactionRequestDetails()
+                .getTransactionDetailsAsync();
+        transactionDetailsObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Observer<List<TransactionDetails>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<TransactionDetails> transactionDetails) {
+                        ChipsAppExecutors
+                                .getInstance()
+                                .getDiskIO()
+                                .execute(ChipsRoomDatabase
+                                        .getInstance(App.getContext().getApplicationContext())
+                                        .transactionDetailsDao()
+                                        .saveTransactionDetails()
+                                );
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.d("Response error status for transaction details is %s", e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     public static LiveData<PagedList<PaymentDetails>> getPaymentDetailsFromRemote() {
         PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
                 .setPageSize(30)
@@ -86,6 +123,20 @@ public class RemoteRepository {
                         .paymentDetailsDao()
                         .getAllPaymentDetails(),
                         pagedListConfig)
+                .build();
+    }
+
+    public static LiveData<PagedList<TransactionDetails>> getTransactionDetailsFromRemote() {
+        PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
+                .setPageSize(30)
+                .setPrefetchDistance(5)
+                .build());
+        return new LivePagedListBuilder<>(
+                ChipsRoomDatabase
+                        .getInstance(App.getContext().getApplicationContext())
+                        .transactionDetailsDao()
+                        .getAllTransactionDetails(),
+                pagedListConfig)
                 .build();
     }
 }

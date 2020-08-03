@@ -1,4 +1,4 @@
-package com.wadektech.chips.data.remote;
+package com.wadektech.chips.data.remote.source;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,11 +8,11 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class PaymentDetailsServiceImpl {
+public class TransactionDetailsServiceImpl {
     private Retrofit retrofit;
-    private static PaymentDetailsServiceImpl INSTANCE;
+    private static TransactionDetailsServiceImpl INSTANCE;
 
-    private PaymentDetailsServiceImpl(){
+    private TransactionDetailsServiceImpl(){
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -23,14 +23,14 @@ public class PaymentDetailsServiceImpl {
                 .build();
     }
 
-    public static synchronized PaymentDetailsServiceImpl getINSTANCE(){
+    public static synchronized TransactionDetailsServiceImpl getINSTANCE(){
         if (INSTANCE == null){
-            INSTANCE = new PaymentDetailsServiceImpl();
+            INSTANCE = new TransactionDetailsServiceImpl();
         }
         return INSTANCE;
     }
 
-    public PaymentDetailsService getPaymentRequestDetails(){
-        return retrofit.create(PaymentDetailsService.class);
+    public TransactionDetailsService getTransactionRequestDetails(){
+        return retrofit.create(TransactionDetailsService.class);
     }
 }

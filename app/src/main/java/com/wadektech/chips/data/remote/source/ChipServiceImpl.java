@@ -1,4 +1,4 @@
-package com.wadektech.chips.data.remote;
+package com.wadektech.chips.data.remote.source;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

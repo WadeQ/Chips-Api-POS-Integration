@@ -1,4 +1,4 @@
-package com.wadektech.chips;
+package com.wadektech.chips.utils;
 
 import android.app.Application;
 import android.content.Context;

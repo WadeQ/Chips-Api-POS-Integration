@@ -1,4 +1,4 @@
-package com.wadektech.chips.data.local;
+package com.wadektech.chips.data.local.source;
 
 import androidx.paging.DataSource;
 import androidx.room.Dao;
