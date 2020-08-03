@@ -12,9 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.wadektech.chips.R;
-import com.wadektech.chips.data.remote.ChipServiceImpl;
-import com.wadektech.chips.data.remote.MerchantPaymentApiServiceImpl;
-import com.wadektech.chips.data.remote.RequestByTokenServiceImpl;
+import com.wadektech.chips.data.remote.source.ChipServiceImpl;
+import com.wadektech.chips.data.remote.source.MerchantPaymentApiServiceImpl;
+import com.wadektech.chips.data.remote.source.RequestByTokenServiceImpl;
 import com.wadektech.chips.data.remote.models.PaymentNotificationReq;
 import com.wadektech.chips.data.remote.models.PaymentNotificationRes;
 import com.wadektech.chips.data.remote.models.PaymentRequestByTokenId;
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         req.setNotifyUrl("https://us-central1-chips-d4dae.cloudfunctions.net/updateStatus");
         req.setRequestTokenImage(true);
         req.setTokenImageSize("SMALL");
-        String key = " Basic YzU4NTRlYTMtNTUyYi00ZDhkLThmZDAtZjllMzAwZmUyM2UxOjNjNDI1YWQ1LTVmYmItNDJjOC1hZTI2LTRmYWJhZjFmMWY4ZA==";
+        String key = " Basic YWE0MjkxZWItMjczOC00ZWQ2LTg3OTItZjc5MTkyMTNiNTExOjM0YzFiYTQ0LWFkNGYtNGNhMy1hMzhiLTRmYTcyNjIyZmFhNA==";
 
         Observable<TokenResDto> tokenResDtoObservable = ChipServiceImpl
                 .getINSTANCE()
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.setMessage("Please be patient as we process your payment request");
         dialog.show();
         PaymentNotificationReq paymentNotificationReq = new PaymentNotificationReq();
-        String key = " Basic YzU4NTRlYTMtNTUyYi00ZDhkLThmZDAtZjllMzAwZmUyM2UxOjNjNDI1YWQ1LTVmYmItNDJjOC1hZTI2LTRmYWJhZjFmMWY4ZA==";
+        String key = " Basic YWE0MjkxZWItMjczOC00ZWQ2LTg3OTItZjc5MTkyMTNiNTExOjM0YzFiYTQ0LWFkNGYtNGNhMy1hMzhiLTRmYTcyNjIyZmFhNA==";
 
         Observable<PaymentNotificationRes> paymentNotificationResObservable = MerchantPaymentApiServiceImpl
                 .getINSTANCE()

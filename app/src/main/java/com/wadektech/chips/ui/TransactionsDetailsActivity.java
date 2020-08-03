@@ -7,22 +7,22 @@ import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 
 import com.wadektech.chips.R;
-import com.wadektech.chips.databinding.ActivityPaymentsDetailsBinding;
+import com.wadektech.chips.databinding.ActivityTransactionsDetailsBinding;
 
-public class PaymentsDetailsActivity extends AppCompatActivity {
-    ActivityPaymentsDetailsBinding binding ;
+public class TransactionsDetailsActivity extends AppCompatActivity {
+    ActivityTransactionsDetailsBinding binding;
     ChipsViewModel chipsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_payments_details);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_transactions_details);
 
         chipsViewModel = new ViewModelProvider(this).get(ChipsViewModel.class);
         binding.setLifecycleOwner(this);
         binding.setViewModel(chipsViewModel);
-        ChipsPaymentAdapter chipsPaymentAdapter = new ChipsPaymentAdapter();
-        binding.rvPayments.setAdapter(chipsPaymentAdapter);
+        ChipsTransactionsAdapter chipsTransactionsAdapter = new ChipsTransactionsAdapter();
+        binding.rvTransactions.setAdapter(chipsTransactionsAdapter);
 
     }
 }

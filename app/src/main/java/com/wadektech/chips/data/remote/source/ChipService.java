@@ -1,4 +1,4 @@
-package com.wadektech.chips.data.remote;
+package com.wadektech.chips.data.remote.source;
 
 import com.wadektech.chips.data.remote.models.TokenReqDto;
 import com.wadektech.chips.data.remote.models.TokenResDto;

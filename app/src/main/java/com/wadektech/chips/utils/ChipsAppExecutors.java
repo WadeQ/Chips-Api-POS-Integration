@@ -1,4 +1,4 @@
-package com.wadektech.chips.ui;
+package com.wadektech.chips.utils;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

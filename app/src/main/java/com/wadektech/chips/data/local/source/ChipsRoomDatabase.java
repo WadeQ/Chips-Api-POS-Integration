@@ -1,11 +1,9 @@
-package com.wadektech.chips.data.local;
+package com.wadektech.chips.data.local.source;
 
 import android.content.Context;
-
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-
 import com.wadektech.chips.data.local.models.PaymentDetails;
 
 @Database(entities = {PaymentDetails.class}, version = 1, exportSchema = false)
@@ -31,6 +29,7 @@ public abstract class ChipsRoomDatabase extends RoomDatabase {
     }
 
     public abstract PaymentDetailsDao paymentDetailsDao();
+    public abstract TransactionDetailsDao transactionDetailsDao();
 
 }
 
