@@ -3,15 +3,13 @@ package com.wadektech.chips.data;
 import androidx.lifecycle.LiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
-
 import com.wadektech.chips.data.local.models.TransactionDetails;
 import com.wadektech.chips.data.remote.source.TransactionDetailsServiceImpl;
 import com.wadektech.chips.utils.App;
 import com.wadektech.chips.data.local.source.ChipsRoomDatabase;
 import com.wadektech.chips.data.local.models.PaymentDetails;
 import com.wadektech.chips.data.remote.source.PaymentDetailsServiceImpl;
-import com.wadektech.chips.utils.ChipsAppExecutors;
-import com.wadektech.chips.utils.SingleLiveEvent;
+
 import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -20,10 +18,12 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
+/**
+ * static @RemoteRepository class that acts as our single source of truth.
+ */
 public class RemoteRepository {
     private static final Object LOCK = new Object();
     private static RemoteRepository sInstance;
-    private SingleLiveEvent<List<PaymentDetails>> paymentList;
 
     public synchronized static RemoteRepository getInstance() {
         if (sInstance == null) {
@@ -33,12 +33,14 @@ public class RemoteRepository {
         }
         return sInstance;
     }
-
+    /**
+     * This function fetches all payment details from chips server asynchronously then caches it locally to be accessed by user.
+     */
     public void fetchPaymentDetails(){
         Observable<List<PaymentDetails>> paymentDetailsObservable = PaymentDetailsServiceImpl
                 .getINSTANCE()
                 .getPaymentRequestDetails()
-                .getPaymentDetails();
+                .getPaymentDetailsByCriteria();
         paymentDetailsObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -51,14 +53,10 @@ public class RemoteRepository {
 
                     @Override
                     public void onNext(List<PaymentDetails> paymentDetailsList) {
-                        ChipsAppExecutors
-                                .getInstance()
-                                .getDiskIO()
-                                .execute(ChipsRoomDatabase
+                        ChipsRoomDatabase
                                         .getInstance(App.getContext().getApplicationContext())
                                         .paymentDetailsDao()
-                                        .savePaymentDetails()
-                                );
+                                        .savePaymentDetails(paymentDetailsList);
                     }
 
                     @Override
@@ -73,6 +71,9 @@ public class RemoteRepository {
                 });
     }
 
+    /**
+     * This function fetches all transactions from chips server asynchronously then caches it locally to be accessed by user.
+     */
     public void fetchTransactionDetailsFromRemote(){
         Observable<List<TransactionDetails>> transactionDetailsObservable = TransactionDetailsServiceImpl
                 .getINSTANCE()
@@ -90,14 +91,10 @@ public class RemoteRepository {
 
                     @Override
                     public void onNext(List<TransactionDetails> transactionDetails) {
-                        ChipsAppExecutors
-                                .getInstance()
-                                .getDiskIO()
-                                .execute(ChipsRoomDatabase
+                        ChipsRoomDatabase
                                         .getInstance(App.getContext().getApplicationContext())
                                         .transactionDetailsDao()
-                                        .saveTransactionDetails()
-                                );
+                                        .saveTransactionDetails(transactionDetails);
                     }
 
                     @Override
@@ -112,7 +109,10 @@ public class RemoteRepository {
                 });
     }
 
-    public static LiveData<PagedList<PaymentDetails>> getPaymentDetailsFromRemote() {
+    /**
+     * @return LiveData PagedList of payment details from local cache which is Room database.
+     */
+    public static LiveData<PagedList<PaymentDetails>> getPaymentDetailsFromLocal() {
         PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
                 .setPageSize(30)
                 .setPrefetchDistance(5)
@@ -126,7 +126,10 @@ public class RemoteRepository {
                 .build();
     }
 
-    public static LiveData<PagedList<TransactionDetails>> getTransactionDetailsFromRemote() {
+    /**
+     * @return a LiveData PagedList of all transactions cached locally and emits data for display in rv.
+     */
+    public static LiveData<PagedList<TransactionDetails>> getTransactionDetailsFromLocal() {
         PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
                 .setPageSize(30)
                 .setPrefetchDistance(5)

@@ -42,7 +42,7 @@ class ChipsTransactionsAdapter : PagedListAdapter<TransactionDetails, ChipsTrans
         }
 
         override fun areContentsTheSame(oldItem: TransactionDetails, newItem: TransactionDetails): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.uuid == newItem.uuid
         }
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import androidx.annotation.RequiresApi;
@@ -30,7 +31,7 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
-    Button confirmTransaction;
+    Button confirmTransaction, mTransactions, mPayments;
     NiftyDialogBuilder materialDesignAnimatedDialog;
     EditText requestId,payeeRefInfo,description;
 
@@ -41,8 +42,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         materialDesignAnimatedDialog = NiftyDialogBuilder.getInstance(this);
         confirmTransaction = findViewById(R.id.result_confirm);
+        mTransactions = findViewById(R.id.transactions);
+        mPayments = findViewById(R.id.payments);
 
         confirmTransaction.setOnClickListener(view -> downloadResponse());
+
+        mPayments.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, PaymentsDetailsActivity.class);
+            startActivity(intent);
+        });
+
+        mTransactions.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, TransactionsDetailsActivity.class);
+            startActivity(intent);
+        });
 
     }
 
@@ -89,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         req.setNotifyUrl("https://us-central1-chips-d4dae.cloudfunctions.net/updateStatus");
         req.setRequestTokenImage(true);
         req.setTokenImageSize("SMALL");
+
         String key = " Basic YWE0MjkxZWItMjczOC00ZWQ2LTg3OTItZjc5MTkyMTNiNTExOjM0YzFiYTQ0LWFkNGYtNGNhMy1hMzhiLTRmYTcyNjIyZmFhNA==";
 
         Observable<TokenResDto> tokenResDtoObservable = ChipServiceImpl
