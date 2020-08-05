@@ -14,10 +14,13 @@ public class ChipsViewModel extends ViewModel {
 
     public ChipsViewModel() {
         remoteRepository = RemoteRepository.getInstance();
-        paymentDetailsList = RemoteRepository.getPaymentDetailsFromRemote();
-        transactionDetailsList = RemoteRepository.getTransactionDetailsFromRemote();
+        paymentDetailsList = RemoteRepository.getPaymentDetailsFromLocal();
+        transactionDetailsList = RemoteRepository.getTransactionDetailsFromLocal();
     }
 
+    /**
+     * @return
+     */
     public LiveData<PagedList<PaymentDetails>> getPaymentDetails() {
         return paymentDetailsList;
     }

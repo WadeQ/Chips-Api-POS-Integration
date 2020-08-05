@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface TransactionDetailsDao {
 
-    @Query("SELECT * FROM transaction_details ORDER BY date DESC")
+    @Query("SELECT * FROM transaction_details ORDER BY uuid ASC")
     DataSource.Factory<Integer, TransactionDetails> getAllTransactionDetails();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

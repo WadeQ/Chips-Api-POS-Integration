@@ -43,7 +43,7 @@ class ChipsPaymentAdapter : PagedListAdapter<PaymentDetails, ChipsPaymentAdapter
         }
 
         override fun areContentsTheSame(oldItem: PaymentDetails, newItem: PaymentDetails): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.tokenId == newItem.tokenId
         }
     }
 }

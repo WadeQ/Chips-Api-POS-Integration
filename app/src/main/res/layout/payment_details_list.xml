@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
@@ -18,64 +19,62 @@
         android:layout_marginLeft="8dp">
 
         <TextView
-            android:id="@+id/tv_post_title"
+            android:id="@+id/tv_token_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
-            android:gravity="center"
-            android:text="@{post.title}"
+            android:text="@{`Payment: `+payment.tokenId}"
             android:textColor="#000"
-            android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/tv_post_id"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imv_token"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_post_id"
+            android:id="@+id/tv_expiry_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
+            android:text="@{`Expiration Time: `+payment.expiryTime}"
             android:textColor="#000"
-            android:text="@{`ID: `+String.valueOf(post.id)}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_post_title" />
+            app:layout_constraintStart_toEndOf="@+id/imv_token"
+            app:layout_constraintTop_toBottomOf="@+id/tv_token_id" />
 
         <TextView
-            android:id="@+id/tv_post_userid"
+            android:id="@+id/tv_status"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
+            android:text="@{`Status: `+payment.status}"
             android:textColor="#000"
-            android:text="@{`UserID: `+String.valueOf(post.userId)}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_post_id" />
+            app:layout_constraintStart_toEndOf="@+id/imv_token"
+            app:layout_constraintTop_toBottomOf="@+id/tv_expiry_time" />
 
         <TextView
-            android:id="@+id/tv_posts_body"
+            android:id="@+id/tv_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
+            android:text="@{`Description: `+payment.description}"
             android:textColor="#000"
-            android:text="@{post.body}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_post_userid" />
+            app:layout_constraintStart_toEndOf="@+id/imv_token"
+            app:layout_constraintTop_toBottomOf="@+id/tv_status" />
 
         <View
+            android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginStart="8dp"
@@ -86,7 +85,47 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_posts_body" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_payee_ref" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imv_token"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:tokenImage="@{payment.tokenImage}"
+            app:layout_constraintBottom_toTopOf="@+id/view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tv_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:text="@{`Amount: `+String.valueOf(payment.amount)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imv_token"
+            app:layout_constraintTop_toBottomOf="@+id/tv_description" />
+
+        <TextView
+            android:id="@+id/tv_payee_ref"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@{`Payee Reference: `+payment.payeeRefInfo}"
+            app:layout_constraintBottom_toTopOf="@+id/view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imv_token"
+            app:layout_constraintTop_toBottomOf="@+id/tv_amount" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

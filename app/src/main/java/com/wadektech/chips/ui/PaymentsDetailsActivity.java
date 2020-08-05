@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 
 import com.wadektech.chips.R;
+import com.wadektech.chips.data.RemoteRepository;
 import com.wadektech.chips.databinding.ActivityPaymentsDetailsBinding;
 
 public class PaymentsDetailsActivity extends AppCompatActivity {
     ActivityPaymentsDetailsBinding binding ;
     ChipsViewModel chipsViewModel;
+    RemoteRepository remoteRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,5 +26,11 @@ public class PaymentsDetailsActivity extends AppCompatActivity {
         ChipsPaymentAdapter chipsPaymentAdapter = new ChipsPaymentAdapter();
         binding.rvPayments.setAdapter(chipsPaymentAdapter);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        remoteRepository.fetchPaymentDetails();
     }
 }
