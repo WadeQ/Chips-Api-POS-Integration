@@ -7,34 +7,28 @@ import androidx.room.RoomDatabase;
 import com.wadektech.chips.data.local.models.PaymentDetails;
 import com.wadektech.chips.data.local.models.TransactionDetails;
 
-@Database(entities = {PaymentDetails.class, TransactionDetails.class}, version = 3, exportSchema = false)
+@Database(entities = {PaymentDetails.class, TransactionDetails.class}, version = 1, exportSchema = false)
 public abstract class ChipsRoomDatabase extends RoomDatabase {
-    private static final String DATABASE_NAME = "chips";
-    private static final Object LOCK = new Object();
-    private static volatile ChipsRoomDatabase sInstance;
+    public static volatile ChipsRoomDatabase roomInstance ;
+    public static final Object LOCK = new Object() ;
 
-    public static ChipsRoomDatabase getInstance(Context context) {
-        if (sInstance == null) {
-            synchronized (LOCK) {
-                if (sInstance == null) {
-                    sInstance = Room.databaseBuilder(
-                                context.getApplicationContext(),
-                                ChipsRoomDatabase.class,
-                               "ROOM_DB")
-                                .fallbackToDestructiveMigration()
-                                .build();
+    public synchronized static ChipsRoomDatabase getInstance(Context context){
+        if (roomInstance == null){
+            synchronized (LOCK){
+                if (roomInstance == null){
+                    roomInstance = Room.databaseBuilder(
+                            context.getApplicationContext(),
+                            ChipsRoomDatabase.class,
+                            "chips_db")
+                            .fallbackToDestructiveMigration()
+                            .build();
                 }
             }
         }
-        return sInstance;
+        return roomInstance ;
     }
 
     public abstract PaymentDetailsDao paymentDetailsDao();
     public abstract TransactionDetailsDao transactionDetailsDao();
 
 }
-
-
-
-
-

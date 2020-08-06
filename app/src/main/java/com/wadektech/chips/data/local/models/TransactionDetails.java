@@ -1,15 +1,14 @@
 package com.wadektech.chips.data.local.models;
 
-
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "transaction_details")
 public class TransactionDetails {
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     @SerializedName("uuid")
     @Expose
     private String uuid;
@@ -70,6 +69,14 @@ public class TransactionDetails {
         this.gratuityAmount = gratuityAmount;
         this.feeAmount = feeAmount;
         this.feeVatAmount = feeVatAmount;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUuid() {

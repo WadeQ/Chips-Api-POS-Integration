@@ -31,6 +31,6 @@ public class TransactionsDetailsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        remoteRepository.fetchTransactionDetailsFromRemote();
+        //remoteRepository.fetchTransactionDetailsFromRemote();
     }
 }

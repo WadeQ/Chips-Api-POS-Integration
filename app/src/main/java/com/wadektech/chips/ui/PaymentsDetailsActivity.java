@@ -31,6 +31,6 @@ public class PaymentsDetailsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        remoteRepository.fetchPaymentDetails();
+        //remoteRepository.fetchPaymentDetails();
     }
 }
