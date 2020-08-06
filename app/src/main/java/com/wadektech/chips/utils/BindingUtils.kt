@@ -1,6 +1,5 @@
 package com.wadektech.chips.utils
 
-import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -14,7 +13,6 @@ import com.wadektech.chips.data.local.models.TransactionDetails
 import com.wadektech.chips.ui.ChipsPaymentAdapter
 import com.wadektech.chips.ui.ChipsTransactionsAdapter
 import timber.log.Timber
-
 
 
 @BindingAdapter("paymentsBindingAdapter")

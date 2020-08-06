@@ -7,19 +7,19 @@ import com.wadektech.chips.data.RemoteRepository;
 import com.wadektech.chips.data.local.models.PaymentDetails;
 import com.wadektech.chips.data.local.models.TransactionDetails;
 
+
 public class ChipsViewModel extends ViewModel {
+    public RemoteRepository remoteRepository ;
     private final LiveData<PagedList<PaymentDetails>> paymentDetailsList;
     private final LiveData<PagedList<TransactionDetails>> transactionDetailsList;
-    public static RemoteRepository remoteRepository;
 
     public ChipsViewModel() {
-        remoteRepository = RemoteRepository.getInstance();
-        paymentDetailsList = RemoteRepository.getPaymentDetailsFromLocal();
-        transactionDetailsList = RemoteRepository.getTransactionDetailsFromLocal();
+       remoteRepository = RemoteRepository.getInstance();
+       paymentDetailsList = remoteRepository.getPaymentDetailsFromLocal();
+       transactionDetailsList = remoteRepository.getTransactionDetailsFromLocal();
     }
-
     /**
-     * @return
+     *
      */
     public LiveData<PagedList<PaymentDetails>> getPaymentDetails() {
         return paymentDetailsList;

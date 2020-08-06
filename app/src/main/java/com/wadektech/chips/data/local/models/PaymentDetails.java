@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "payment_details")
 public class PaymentDetails {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     @SerializedName("amount")
     @Expose
     private Integer amount;
@@ -37,8 +39,6 @@ public class PaymentDetails {
     @SerializedName("systemRefInfo")
     @Expose
     private String systemRefInfo;
-
-    @PrimaryKey(autoGenerate = false)
     @SerializedName("tokenId")
     @Expose
     private String tokenId;
@@ -49,7 +49,6 @@ public class PaymentDetails {
     public PaymentDetails(Integer amount, String description, String expiryTime, String payeeAccountUuid,
                           String payeeRefInfo, String payeeSiteName, String payeeSiteRefInfo, Boolean requestTip,
                           String status, String systemRefInfo, String tokenId, String tokenImage) {
-
         this.amount = amount;
         this.description = description;
         this.expiryTime = expiryTime;
@@ -62,6 +61,14 @@ public class PaymentDetails {
         this.systemRefInfo = systemRefInfo;
         this.tokenId = tokenId;
         this.tokenImage = tokenImage;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Integer getAmount() {

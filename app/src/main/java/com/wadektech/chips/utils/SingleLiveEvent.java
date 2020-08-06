@@ -14,7 +14,7 @@ import timber.log.Timber;
 public class SingleLiveEvent<T> extends MutableLiveData<T> {
     private final AtomicBoolean mPending=new AtomicBoolean(false);
     @MainThread
-    public void observe(LifecycleOwner owner, @NotNull final Observer<? super T> observer){
+    public void observe(@NotNull LifecycleOwner owner, @NotNull final Observer<? super T> observer){
         if (hasActiveObservers()){
             Timber.d("multiple observers registered but only one will be notified of changes");
         }
