@@ -10,7 +10,6 @@ import com.wadektech.chips.data.remote.source.TransactionDetailsServiceImpl;
 import com.wadektech.chips.data.remote.source.PaymentDetailsServiceImpl;
 import com.wadektech.chips.utils.App;
 import java.util.List;
-
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -18,9 +17,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-/**
- * static @RemoteRepository class that acts as our single source of truth.
- */
+
 public class RemoteRepository {
     public static volatile RemoteRepository rInstance ;
     public static final Object Lock = new Object();
