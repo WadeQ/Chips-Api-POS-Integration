@@ -20,17 +20,31 @@
             android:id="@+id/rv_transactions"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             android:clipToPadding="false"
             android:padding="8dp"
-            app:transactionsBindingAdapter="@{viewModel.transactionDetails}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trans_search"
+            app:transactionsBindingAdapter="@{viewModel.transactionDetails}"
             tools:listitem="@layout/payment_details_list">
 
         </androidx.recyclerview.widget.RecyclerView>
+
+        <SearchView
+            android:id="@+id/trans_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:queryHint="Search list.."
+            android:background="@drawable/searchview_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

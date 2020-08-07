@@ -10,7 +10,7 @@ import com.wadektech.chips.data.remote.source.TransactionDetailsServiceImpl;
 import com.wadektech.chips.data.remote.source.PaymentDetailsServiceImpl;
 import com.wadektech.chips.utils.App;
 import java.util.List;
-import java.util.Objects;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -37,7 +37,8 @@ public class RemoteRepository {
     }
 
     /**
-     * This function fetches all payment details from chips server asynchronously then caches it locally to be accessed by user.
+     * This function fetches all payment details from chips server asynchronously then caches it locally
+     * to be accessed by user.
      */
     public void fetchPaymentDetails(){
         Observable<List<PaymentDetails>> paymentDetailsObservable = PaymentDetailsServiceImpl
@@ -76,7 +77,8 @@ public class RemoteRepository {
     }
 
     /**
-     * This function fetches all transactions from chips server asynchronously then caches it locally to be accessed by user.
+     * This function fetches all transactions from chips server asynchronously then caches it locally to be
+     * accessed by user, needs to retrieve the details of the transaction related to a previously submitted request.
      */
     public void fetchTransactionDetailsFromRemote(){
         Observable<List<TransactionDetails>> transactionDetailsObservable = TransactionDetailsServiceImpl
@@ -115,7 +117,7 @@ public class RemoteRepository {
     }
 
     /**
-     * @return LiveData PagedList of payment details from local cache which is Room database.
+     * @return LiveData PagedList of payment details from Room database.
      */
     public LiveData<PagedList<PaymentDetails>> getPaymentDetailsFromLocal() {
         PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
@@ -144,6 +146,45 @@ public class RemoteRepository {
                        .getInstance(App.Companion.getApp())
                         .transactionDetailsDao()
                         .getAllTransactionDetails(),
+                pagedListConfig)
+                .build();
+    }
+
+    /**
+     * @param tokenId
+     * This method is called when an we needs to retrieve the details of a previously submitted payment request
+     * by providing the tokenId. This method will return, at most, one resulting API structure.
+     */
+    public void searchPaymentDetailsByTokenIdFromLocal(String tokenId) {
+        PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
+                .setPageSize(30)
+                .setPrefetchDistance(5)
+                .build());
+        new LivePagedListBuilder<>(
+                ChipsRoomDatabase
+                        .getInstance(App.Companion.getApp())
+                        .paymentDetailsDao()
+                        .searchPaymentDetailsByTokenId(tokenId),
+                pagedListConfig)
+                .build();
+    }
+
+    /**
+     * @param siteRef
+     * This method is called when a client needs to retrieve the details of the transaction
+     * related to a previously submitted request. The Various parameters are available to filter the list, and,
+     * depending on the criteria, zero or more results will be returned.
+     */
+    public void searchTransactionDetailsBySiteRefInfo(String siteRef) {
+        PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
+                .setPageSize(30)
+                .setPrefetchDistance(5)
+                .build());
+        new LivePagedListBuilder<>(
+                ChipsRoomDatabase
+                        .getInstance(App.Companion.getApp())
+                        .transactionDetailsDao()
+                        .searchTransactionDetailsBySiteRefInfo(siteRef),
                 pagedListConfig)
                 .build();
     }

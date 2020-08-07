@@ -3,16 +3,15 @@ package com.wadektech.chips.data.remote.source;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.wadektech.chips.utils.Constants;
-
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ChipServiceImpl {
+public class MerchantPaymentServiceImpl {
     private Retrofit retrofit;
-    private static ChipServiceImpl INSTANCE;
+    private static MerchantPaymentServiceImpl INSTANCE;
 
-    private ChipServiceImpl(){
+    private MerchantPaymentServiceImpl(){
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -23,14 +22,22 @@ public class ChipServiceImpl {
                 .build();
     }
 
-    public static synchronized ChipServiceImpl getINSTANCE(){
+    public static synchronized MerchantPaymentServiceImpl getINSTANCE(){
         if (INSTANCE == null){
-            INSTANCE = new ChipServiceImpl();
+            INSTANCE = new MerchantPaymentServiceImpl();
         }
         return INSTANCE;
     }
 
-    public ChipService getChipService(){
-        return retrofit.create(ChipService.class);
+    public MerchantPaymentService getMerchantPaymentNotification(){
+        return retrofit.create(MerchantPaymentService.class);
     }
 }
+
+
+
+
+
+
+
+

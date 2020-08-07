@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import androidx.annotation.RequiresApi;
@@ -13,9 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.wadektech.chips.R;
-import com.wadektech.chips.data.remote.source.ChipServiceImpl;
-import com.wadektech.chips.data.remote.source.MerchantPaymentApiServiceImpl;
-import com.wadektech.chips.data.remote.source.RequestByTokenServiceImpl;
+import com.wadektech.chips.data.remote.source.PaymentRequestServiceImpl;
+import com.wadektech.chips.data.remote.source.MerchantPaymentServiceImpl;
 import com.wadektech.chips.data.remote.models.PaymentNotificationReq;
 import com.wadektech.chips.data.remote.models.PaymentNotificationRes;
 import com.wadektech.chips.data.remote.models.PaymentRequestByTokenId;
@@ -105,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         String key = " Basic YWE0MjkxZWItMjczOC00ZWQ2LTg3OTItZjc5MTkyMTNiNTExOjM0YzFiYTQ0LWFkNGYtNGNhMy1hMzhiLTRmYTcyNjIyZmFhNA==";
 
-        Observable<TokenResDto> tokenResDtoObservable = ChipServiceImpl
+        Observable<TokenResDto> tokenResDtoObservable = PaymentRequestServiceImpl
                 .getINSTANCE()
                 .getChipService()
                 .createPayment(key,req);
@@ -158,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         PaymentNotificationReq paymentNotificationReq = new PaymentNotificationReq();
         String key = " Basic YWE0MjkxZWItMjczOC00ZWQ2LTg3OTItZjc5MTkyMTNiNTExOjM0YzFiYTQ0LWFkNGYtNGNhMy1hMzhiLTRmYTcyNjIyZmFhNA==";
 
-        Observable<PaymentNotificationRes> paymentNotificationResObservable = MerchantPaymentApiServiceImpl
+        Observable<PaymentNotificationRes> paymentNotificationResObservable = MerchantPaymentServiceImpl
                 .getINSTANCE()
                 .getMerchantPaymentNotification()
                 .notifyPaymentCompletion(key,paymentNotificationReq);
