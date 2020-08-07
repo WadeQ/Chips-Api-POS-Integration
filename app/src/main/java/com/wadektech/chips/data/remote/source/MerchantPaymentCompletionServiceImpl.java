@@ -7,11 +7,11 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MerchantPaymentServiceImpl {
+public class MerchantPaymentCompletionServiceImpl {
     private Retrofit retrofit;
-    private static MerchantPaymentServiceImpl INSTANCE;
+    private static MerchantPaymentCompletionServiceImpl INSTANCE;
 
-    private MerchantPaymentServiceImpl(){
+    private MerchantPaymentCompletionServiceImpl(){
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -22,15 +22,15 @@ public class MerchantPaymentServiceImpl {
                 .build();
     }
 
-    public static synchronized MerchantPaymentServiceImpl getINSTANCE(){
+    public static synchronized MerchantPaymentCompletionServiceImpl getINSTANCE(){
         if (INSTANCE == null){
-            INSTANCE = new MerchantPaymentServiceImpl();
+            INSTANCE = new MerchantPaymentCompletionServiceImpl();
         }
         return INSTANCE;
     }
 
-    public MerchantPaymentService getMerchantPaymentNotification(){
-        return retrofit.create(MerchantPaymentService.class);
+    public MerchantPaymentCompletionService getMerchantPaymentNotification(){
+        return retrofit.create(MerchantPaymentCompletionService.class);
     }
 }
 

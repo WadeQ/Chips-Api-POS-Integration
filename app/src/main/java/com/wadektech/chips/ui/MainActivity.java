@@ -13,10 +13,9 @@ import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.wadektech.chips.R;
 import com.wadektech.chips.data.remote.source.PaymentRequestServiceImpl;
-import com.wadektech.chips.data.remote.source.MerchantPaymentServiceImpl;
-import com.wadektech.chips.data.remote.models.PaymentNotificationReq;
-import com.wadektech.chips.data.remote.models.PaymentNotificationRes;
-import com.wadektech.chips.data.remote.models.PaymentRequestByTokenId;
+import com.wadektech.chips.data.remote.source.MerchantPaymentCompletionServiceImpl;
+import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionReq;
+import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionRes;
 import com.wadektech.chips.data.remote.models.TokenReqDto;
 import com.wadektech.chips.data.remote.models.TokenResDto;
 import com.wadektech.chips.utils.Constants;
@@ -42,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         confirmTransaction = findViewById(R.id.result_confirm);
         mTransactions = findViewById(R.id.transactions);
         mPayments = findViewById(R.id.payments);
+
+        getPaymentCompletionStatus();
 
         confirmTransaction.setOnClickListener(view -> downloadResponse());
 
@@ -85,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
         TokenReqDto req  = new TokenReqDto();
         req.setRequestId("test234");
-        req.setDueDate("2020-08-01");
+        req.setDueDate("2020-08-07");
         req.setDescription("string");
-        req.setExpiryTime("2020-08-02T09:05:41.366Z");
+        req.setExpiryTime("2020-08-08T09:05:41.366Z");
         req.setAmount(2000);
         req.setPayeeRefInfo("string");
         req.setPayeeCategory1("string");
@@ -141,84 +142,58 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete() {
-                        dialog.dismiss();
 
                     }
                 });
     }
-
-    public void getPaymentNotification(){
+//TO-DO
+    /**
+     * This METHOD is called when the SmartPOS device needs to notify the CHIPS® Payment Network platform of a
+     * successful card payment. This will enable CHIPS® to allocate the received funds to the involved CHIPS® account.
+     */
+    public void getPaymentCompletionStatus(){
         ProgressDialog dialog = new ProgressDialog(MainActivity.this, R.style.DialogStyle);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setTitle("Awaiting server response...");
         dialog.setMessage("Please be patient as we process your payment request");
         dialog.show();
-        PaymentNotificationReq paymentNotificationReq = new PaymentNotificationReq();
+        MerchantPaymentCompletionReq req = new MerchantPaymentCompletionReq();
+        req.setAmount(2000);
+        req.setBankRefInfo("string");
+        req.setGratuityAmount(100);
+        req.setPayeeAccountUuid("string");
+        req.setPayerRefInfo("string");
+        req.setRequestId("string");
+        req.setTokenId("string");
+        req.setPayeeRefInfo("string");
+
         String key = " Basic YWE0MjkxZWItMjczOC00ZWQ2LTg3OTItZjc5MTkyMTNiNTExOjM0YzFiYTQ0LWFkNGYtNGNhMy1hMzhiLTRmYTcyNjIyZmFhNA==";
 
-        Observable<PaymentNotificationRes> paymentNotificationResObservable = MerchantPaymentServiceImpl
+        Observable<MerchantPaymentCompletionRes> merchantPaymentCompletionResObservable = MerchantPaymentCompletionServiceImpl
                 .getINSTANCE()
                 .getMerchantPaymentNotification()
-                .notifyPaymentCompletion(key,paymentNotificationReq);
-        paymentNotificationResObservable.subscribeOn(Schedulers.io())
+                .notifyPaymentCompletion(key,req);
+
+        merchantPaymentCompletionResObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
-                .subscribe(new Observer<PaymentNotificationRes>() {
+                .subscribe(new Observer<MerchantPaymentCompletionRes>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         dialog.dismiss();
                     }
 
                     @Override
-                    public void onNext(PaymentNotificationRes paymentNotificationRes) {
+                    public void onNext(MerchantPaymentCompletionRes completionRes) {
                         dialog.dismiss();
                         //TO-DO implementation for successful payment request
+                        Timber.d("Response status code for merchant completion status is %s",completionRes.getStatus());
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         dialog.dismiss();
-                        Timber.d("Response error status for payment is %s", e.getMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
-    private void getPaymentRequestDetailsByTokenId(){
-        ProgressDialog dialog = new ProgressDialog(MainActivity.this, R.style.DialogStyle);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setTitle("Awaiting server response...");
-        dialog.setMessage("Please be patient as we process your payment request");
-        dialog.show();
-        String tokenId = "YzU4NTRlxOjNjNDI1YWQ1LTVmYmItNDJjOC1hZTI2LTRmYWJhZjFmMW";
-        Observable<PaymentRequestByTokenId> paymentRequestByTokenIdObservable = RequestByTokenServiceImpl
-                .getINSTANCE()
-                .getPaymentRequestByTokenID()
-                .requestPaymentByTokenID(tokenId);
-        paymentRequestByTokenIdObservable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Observer<PaymentRequestByTokenId>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        dialog.dismiss();
-                    }
-
-                    @Override
-                    public void onNext(PaymentRequestByTokenId paymentRequestByTokenId) {
-                        dialog.dismiss();
-                        //TO-DO implementation for the token request using token id
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        dialog.dismiss();
-                        Timber.d("Response error status for request by token id is %s", e.getMessage());
+                        Timber.d("Response error status for merchant completion is %s", e.getMessage());
                     }
 
                     @Override
