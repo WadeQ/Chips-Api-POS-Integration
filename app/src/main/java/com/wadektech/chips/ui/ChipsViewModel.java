@@ -14,13 +14,13 @@ public class ChipsViewModel extends ViewModel {
     private final LiveData<PagedList<TransactionDetails>> transactionDetailsList;
 
     public ChipsViewModel() {
-       remoteRepository = RemoteRepository.getInstance();
-       paymentDetailsList = remoteRepository.getPaymentDetailsFromLocal();
-       transactionDetailsList = remoteRepository.getTransactionDetailsFromLocal();
+        remoteRepository = RemoteRepository.getInstance();
+        paymentDetailsList = remoteRepository.getPaymentDetailsFromLocal();
+        transactionDetailsList = remoteRepository.getTransactionDetailsFromLocal();
+        remoteRepository.fetchTransactionDetailsFromRemote();
+        remoteRepository.fetchPaymentDetails();
     }
-    /**
-     *
-     */
+
     public LiveData<PagedList<PaymentDetails>> getPaymentDetails() {
         return paymentDetailsList;
     }
@@ -28,4 +28,13 @@ public class ChipsViewModel extends ViewModel {
     public LiveData<PagedList<TransactionDetails>> getTransactionDetails() {
         return transactionDetailsList;
     }
+
+    public void getPaymentDetailsByTokenId(String tokenId) {
+        remoteRepository.searchPaymentDetailsByTokenIdFromLocal(tokenId);
+    }
+
+    public void getTransactionDetailsBySiteRefInfo(String siteRef) {
+        remoteRepository.searchTransactionDetailsBySiteRefInfo(siteRef);
+    }
+
 }

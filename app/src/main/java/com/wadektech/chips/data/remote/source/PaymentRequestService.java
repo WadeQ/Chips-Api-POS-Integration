@@ -8,7 +8,12 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
-public interface ChipService {
+/**
+ * This endpoint is called when the SmartPOS device submits a request for the creation of a payment request.
+ * Since the created token code is a Masterpass token, it is unique for a predefined period as specified on the request.
+ * This endpoint will return, at most, one resulting API structure.
+ */
+public interface PaymentRequestService {
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @POST("payments/requests")

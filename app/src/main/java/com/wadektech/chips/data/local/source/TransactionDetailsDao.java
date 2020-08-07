@@ -7,6 +7,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import com.wadektech.chips.data.local.models.PaymentDetails;
 import com.wadektech.chips.data.local.models.TransactionDetails;
 
 import java.util.List;
@@ -19,4 +20,7 @@ public interface TransactionDetailsDao {
 
     @Query("SELECT * FROM transaction_details  ORDER BY uuid ASC")
     DataSource.Factory<Integer, TransactionDetails> getAllTransactionDetails();
+
+    @Query("SELECT * FROM transaction_details WHERE payeeSiteRefInfo LIKE :filter")
+    DataSource.Factory<Integer, TransactionDetails> searchTransactionDetailsBySiteRefInfo(String filter);
 }

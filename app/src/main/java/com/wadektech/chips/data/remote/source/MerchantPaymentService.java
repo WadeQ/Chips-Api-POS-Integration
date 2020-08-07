@@ -8,7 +8,12 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
-public interface MerchantPaymentApiService {
+
+/**
+ *This endpoint is called when the SmartPOS device needs to notify the CHIPS® Payment Network platform of a
+ * successful card payment. This will enable CHIPS® to allocate the received funds to the involved CHIPS® account
+ */
+public interface MerchantPaymentService {
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @POST("payments")
     Observable<PaymentNotificationRes> notifyPaymentCompletion(
