@@ -18,6 +18,6 @@ public interface PaymentDetailsDao {
     @Query("SELECT * FROM payment_details  ORDER BY tokenId ASC")
     DataSource.Factory<Integer, PaymentDetails> getAllPaymentDetails();
 
-    @Query("SELECT * FROM payment_details WHERE tokenId LIKE :filter ORDER BY id DESC")
+    @Query("SELECT * FROM payment_details WHERE tokenId LIKE :filter ORDER BY expiryTime DESC")
     DataSource.Factory<Integer, PaymentDetails> searchPaymentDetailsByTokenId(String filter);
 }

@@ -19,6 +19,7 @@ public class ChipsViewModel extends ViewModel {
         transactionDetailsList = remoteRepository.getTransactionDetailsFromLocal();
         remoteRepository.fetchTransactionDetailsFromRemote();
         remoteRepository.fetchPaymentDetails();
+        remoteRepository.getPaymentCompletionStatus();
     }
 
     public LiveData<PagedList<PaymentDetails>> getPaymentDetails() {
