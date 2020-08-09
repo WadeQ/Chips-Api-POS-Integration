@@ -4,6 +4,8 @@ import com.wadektech.chips.data.local.models.TransactionDetails;
 import java.util.List;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 
 /**
  * This endpoint is called when a client/external system needs to retrieve the details of the transaction related
@@ -12,6 +14,9 @@ import retrofit2.http.GET;
  */
 public interface TransactionDetailsService {
 
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("transactions")
-    Observable<List<TransactionDetails>> getTransactionDetailsAsync();
+    Observable<List<TransactionDetails>> getTransactionDetailsAsync(
+            @Header("Authorization") String authKey
+    );
 }

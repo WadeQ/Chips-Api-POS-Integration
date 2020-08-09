@@ -7,17 +7,15 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.widget.Button;
 import android.widget.EditText;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.wadektech.chips.R;
-import com.wadektech.chips.data.remote.source.PaymentRequestServiceImpl;
-import com.wadektech.chips.data.remote.source.MerchantPaymentCompletionServiceImpl;
-import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionReq;
-import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionRes;
 import com.wadektech.chips.data.remote.models.TokenReqDto;
 import com.wadektech.chips.data.remote.models.TokenResDto;
+import com.wadektech.chips.data.remote.source.PaymentRequestServiceImpl;
 import com.wadektech.chips.utils.Constants;
 import java.nio.charset.StandardCharsets;
 import io.reactivex.Observable;
@@ -41,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
         confirmTransaction = findViewById(R.id.result_confirm);
         mTransactions = findViewById(R.id.transactions);
         mPayments = findViewById(R.id.payments);
-
-        getPaymentCompletionStatus();
 
         confirmTransaction.setOnClickListener(view -> downloadResponse());
 
@@ -138,62 +134,6 @@ public class MainActivity extends AppCompatActivity {
                     public void onError(Throwable e) {
                         dialog.dismiss();
                         Timber.d("Response error status is %s", e.getMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-//TO-DO
-    /**
-     * This METHOD is called when the SmartPOS device needs to notify the CHIPS® Payment Network platform of a
-     * successful card payment. This will enable CHIPS® to allocate the received funds to the involved CHIPS® account.
-     */
-    public void getPaymentCompletionStatus(){
-        ProgressDialog dialog = new ProgressDialog(MainActivity.this, R.style.DialogStyle);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setTitle("Awaiting server response...");
-        dialog.setMessage("Please be patient as we process your payment request");
-        dialog.show();
-        MerchantPaymentCompletionReq req = new MerchantPaymentCompletionReq();
-        req.setAmount(2000);
-        req.setBankRefInfo("string");
-        req.setGratuityAmount(100);
-        req.setPayeeAccountUuid("string");
-        req.setPayerRefInfo("string");
-        req.setRequestId("string");
-        req.setTokenId("string");
-        req.setPayeeRefInfo("string");
-
-        String key = " Basic YWE0MjkxZWItMjczOC00ZWQ2LTg3OTItZjc5MTkyMTNiNTExOjM0YzFiYTQ0LWFkNGYtNGNhMy1hMzhiLTRmYTcyNjIyZmFhNA==";
-
-        Observable<MerchantPaymentCompletionRes> merchantPaymentCompletionResObservable = MerchantPaymentCompletionServiceImpl
-                .getINSTANCE()
-                .getMerchantPaymentNotification()
-                .notifyPaymentCompletion(key,req);
-
-        merchantPaymentCompletionResObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Observer<MerchantPaymentCompletionRes>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        dialog.dismiss();
-                    }
-
-                    @Override
-                    public void onNext(MerchantPaymentCompletionRes completionRes) {
-                        dialog.dismiss();
-                        //TO-DO implementation for successful payment request
-                        Timber.d("Response status code for merchant completion status is %s",completionRes.getStatus());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        dialog.dismiss();
-                        Timber.d("Response error status for merchant completion is %s", e.getMessage());
                     }
 
                     @Override

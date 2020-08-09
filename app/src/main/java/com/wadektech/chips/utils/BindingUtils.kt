@@ -43,7 +43,19 @@ fun bindPaymentTokenImages(imageView: AppCompatImageView, imageUrl: String?){
         }
 }
 
-
+@BindingAdapter("token")
+fun bindTokenImages(imageView: AppCompatImageView, imageUrl: String?){
+    imageUrl?.let {
+        val imageUri = imageUrl.toUri().buildUpon().scheme("https").build()
+        Glide.with(imageView.context)
+                .load(imageUri)
+                .apply(RequestOptions()
+                        .placeholder(R.drawable.loading)
+                        .error(R.drawable.error)
+                )
+                .into(imageView)
+    }
+}
 
 
 
