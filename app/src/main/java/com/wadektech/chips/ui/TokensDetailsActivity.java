@@ -20,8 +20,8 @@ public class TokensDetailsActivity extends AppCompatActivity {
     TextView responseText, mDesc, mDate;
     String encoded_image;
     int amount;
-    String description;
-    String date;
+    String requestId;
+    String tokenId;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -38,16 +38,16 @@ public class TokensDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         encoded_image = intent.getStringExtra("encoded_image");
         amount = intent.getIntExtra("amount",0);
-        description = intent.getStringExtra("description");
-        date = intent.getStringExtra("date");
+        requestId = intent.getStringExtra("requestId");
+        tokenId = intent.getStringExtra("tokenId");
         assert encoded_image!= null;
         Bitmap image = decodeImage(encoded_image);
         qrCodeImage.setImageBitmap(image);
         Toast.makeText(getBaseContext(), "qr code success", Toast.LENGTH_SHORT).show();
 
        responseText.setText("Amount: "+amount);
-       mDate.setText("Date: "+date);
-       mDesc.setText("Description: "+description);
+       mDate.setText("Token ID: "+tokenId);
+       mDesc.setText("Request ID: "+requestId);
 
     }
 

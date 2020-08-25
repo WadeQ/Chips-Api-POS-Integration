@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.wadektech.chips.R;
@@ -19,7 +18,6 @@ import com.wadektech.chips.data.remote.source.PaymentDetailsServiceImpl;
 import com.wadektech.chips.data.remote.source.TransactionDetailsServiceImpl;
 import com.wadektech.chips.utils.App;
 import com.wadektech.chips.utils.FirebaseRealtimeDatabaseQueryLiveData;
-
 import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -161,7 +159,6 @@ public class RemoteRepository {
                     public void onNext(PaymentDetails paymentDetailsList) {
                         dialog.dismiss();
                         //display result
-
 
                     }
 
