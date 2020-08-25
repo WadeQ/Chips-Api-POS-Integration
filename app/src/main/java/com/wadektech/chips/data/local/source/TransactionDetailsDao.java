@@ -6,10 +6,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-
-import com.wadektech.chips.data.local.models.PaymentDetails;
 import com.wadektech.chips.data.local.models.TransactionDetails;
-
 import java.util.List;
 
 @Dao

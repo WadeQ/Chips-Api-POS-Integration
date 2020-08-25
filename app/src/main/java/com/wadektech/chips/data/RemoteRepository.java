@@ -5,6 +5,9 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.wadektech.chips.R;
 import com.wadektech.chips.data.local.models.PaymentDetails;
 import com.wadektech.chips.data.local.models.TransactionDetails;
@@ -15,6 +18,8 @@ import com.wadektech.chips.data.remote.source.MerchantPaymentCompletionServiceIm
 import com.wadektech.chips.data.remote.source.PaymentDetailsServiceImpl;
 import com.wadektech.chips.data.remote.source.TransactionDetailsServiceImpl;
 import com.wadektech.chips.utils.App;
+import com.wadektech.chips.utils.FirebaseRealtimeDatabaseQueryLiveData;
+
 import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -64,10 +69,13 @@ public class RemoteRepository {
                     @Override
                     public void onNext(List<PaymentDetails> paymentDetailsList) {
                         Timber.d("onNext() payments: %s", paymentDetailsList.size());
-                        ChipsRoomDatabase
-                                .getInstance(App.Companion.getApp())
-                                .paymentDetailsDao()
-                                .savePaymentDetails(paymentDetailsList);
+                        //ChipsRoomDatabase
+                         //       .getInstance(App.getAppContext())
+                          //      .paymentDetailsDao()
+                          //      .savePaymentDetails(paymentDetailsList);
+                        DatabaseReference myRootRef = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference paymentsRef =  myRootRef.child("PaymentsDetails");
+                        paymentsRef.setValue(paymentDetailsList);
                     }
 
                     @Override
@@ -104,10 +112,13 @@ public class RemoteRepository {
                     @Override
                     public void onNext(List<TransactionDetails> transactionDetails) {
                         Timber.d("Transactions onNext(): %s", transactionDetails.size());
-                        ChipsRoomDatabase
-                                        .getInstance(App.Companion.getApp())
-                                        .transactionDetailsDao()
-                                        .saveTransactionDetails(transactionDetails);
+                        //ChipsRoomDatabase
+                         //               .getInstance(App.getAppContext())
+                         //               .transactionDetailsDao()
+                          //              .saveTransactionDetails(transactionDetails);
+                        DatabaseReference myRootRef = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference transactionsRef =  myRootRef.child("TransactionsDetails");
+                        transactionsRef.setValue(transactionDetails);
                     }
 
                     @Override
@@ -223,7 +234,7 @@ public class RemoteRepository {
                 .build());
         return new LivePagedListBuilder<>(
                 ChipsRoomDatabase
-                        .getInstance(App.Companion.getApp())
+                        .getInstance(App.getAppContext())
                         .paymentDetailsDao()
                         .getAllPaymentDetails(),
                         pagedListConfig)
@@ -240,7 +251,7 @@ public class RemoteRepository {
                 .build());
         return new LivePagedListBuilder<>(
                 ChipsRoomDatabase
-                       .getInstance(App.Companion.getApp())
+                       .getInstance(App.getAppContext())
                         .transactionDetailsDao()
                         .getAllTransactionDetails(),
                 pagedListConfig)
@@ -259,7 +270,7 @@ public class RemoteRepository {
                 .build());
         new LivePagedListBuilder<>(
                 ChipsRoomDatabase
-                        .getInstance(App.Companion.getApp())
+                        .getInstance(App.getAppContext())
                         .paymentDetailsDao()
                         .searchPaymentDetailsByTokenId(tokenId),
                 pagedListConfig)
@@ -279,10 +290,20 @@ public class RemoteRepository {
                 .build());
         new LivePagedListBuilder<>(
                 ChipsRoomDatabase
-                        .getInstance(App.Companion.getApp())
+                        .getInstance(App.getAppContext())
                         .transactionDetailsDao()
                         .searchTransactionDetailsBySiteRefInfo(siteRef),
                 pagedListConfig)
                 .build();
+    }
+
+    public FirebaseRealtimeDatabaseQueryLiveData<PaymentDetails> getAllPaymentDetailsFromDB(){
+        final DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("PaymentsDetails");
+        return new FirebaseRealtimeDatabaseQueryLiveData<>(PaymentDetails.class, dRef);
+    }
+
+    public FirebaseRealtimeDatabaseQueryLiveData<TransactionDetails> getAllTransactionDetailsFromDB(){
+        final DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("TransactionsDetails");
+        return new FirebaseRealtimeDatabaseQueryLiveData<>(TransactionDetails.class, dRef);
     }
 }

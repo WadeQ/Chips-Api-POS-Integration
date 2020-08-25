@@ -82,9 +82,9 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
         TokenReqDto req  = new TokenReqDto();
         req.setRequestId("test234");
-        req.setDueDate("2020-08-07");
-        req.setDescription("string");
-        req.setExpiryTime("2020-08-08T09:05:41.366Z");
+        req.setDueDate("2020-08-19");
+        req.setDescription("Iron box");
+        req.setExpiryTime("2020-08-20T09:05:41.366Z");
         req.setAmount(2000);
         req.setPayeeRefInfo("string");
         req.setPayeeCategory1("string");
