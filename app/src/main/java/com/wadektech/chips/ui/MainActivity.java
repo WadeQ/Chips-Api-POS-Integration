@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,7 +29,7 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity {
     Button confirmTransaction, mTransactions, mPayments;
     NiftyDialogBuilder materialDesignAnimatedDialog;
-    EditText requestId,payeeRefInfo,description;
+    EditText mAmount;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -40,7 +41,15 @@ public class MainActivity extends AppCompatActivity {
         mTransactions = findViewById(R.id.transactions);
         mPayments = findViewById(R.id.payments);
 
-        confirmTransaction.setOnClickListener(view -> downloadResponse());
+        confirmTransaction.setOnClickListener(view -> {
+            mAmount = findViewById(R.id.transAmount);
+            String amount = mAmount.getText().toString().trim();
+            if (TextUtils.isEmpty(amount)){
+                mAmount.setError("Amount cannot be blank!");
+            } else {
+                downloadResponse(amount);
+            }
+        });
 
         mPayments.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, PaymentsDetailsActivity.class);
@@ -55,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void downloadResponse(){
+    private void downloadResponse(String amount){
         materialDesignAnimatedDialog
                 .withTitle("CHOOSE PAYMENT")
                 .withMessage("Which payment method do you want to proceed with?")
@@ -68,13 +77,13 @@ public class MainActivity extends AppCompatActivity {
                 .withEffect(Effectstype.Fall)
                 .setButton2Click(view -> materialDesignAnimatedDialog.dismiss())
                 .setButton1Click(view -> {
-                    fetchToken();
+                    fetchToken(amount);
                     materialDesignAnimatedDialog.dismiss();
                 });
         materialDesignAnimatedDialog.show();
     }
 
-    public void fetchToken(){
+    public void fetchToken(String amt){
         ProgressDialog dialog = new ProgressDialog(MainActivity.this, R.style.DialogStyle);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setTitle("Awaiting server response...");
@@ -82,10 +91,10 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
         TokenReqDto req  = new TokenReqDto();
         req.setRequestId("test234");
-        req.setDueDate("2020-08-07");
-        req.setDescription("string");
-        req.setExpiryTime("2020-08-08T09:05:41.366Z");
-        req.setAmount(2000);
+        req.setDueDate("2020-08-19");
+        req.setDescription("Iron box");
+        req.setExpiryTime("2020-08-20T09:05:41.366Z");
+        req.setAmount(Integer.parseInt(amt));
         req.setPayeeRefInfo("string");
         req.setPayeeCategory1("string");
         req.setPayeeCategory2("string");
