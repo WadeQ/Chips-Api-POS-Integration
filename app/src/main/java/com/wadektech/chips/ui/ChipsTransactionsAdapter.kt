@@ -4,11 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.wadektech.chips.data.local.models.TransactionDetails
 import com.wadektech.chips.databinding.TransactionsDetailsListBinding
 
-class ChipsTransactionsAdapter : PagedListAdapter<TransactionDetails, ChipsTransactionsAdapter.ViewHolder>(TransactionDetailsDiffUtil()) {
+class ChipsTransactionsAdapter : ListAdapter<TransactionDetails, ChipsTransactionsAdapter.ViewHolder>(TransactionDetailsDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }

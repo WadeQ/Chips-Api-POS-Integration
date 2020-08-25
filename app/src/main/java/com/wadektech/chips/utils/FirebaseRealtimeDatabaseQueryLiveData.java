@@ -48,7 +48,7 @@ public class FirebaseRealtimeDatabaseQueryLiveData<T> extends LiveData<List<T>> 
     private List<T> dataSnapshotToList(DataSnapshot dataSnapshot) {
         final List<T> list = new ArrayList<>();
         if (!dataSnapshot.exists() || !dataSnapshot.hasChildren()){
-            Timber.d("dataSnapshotToList : not dataSnapshot exists");
+            Timber.d("dataSnapshotToList : no dataSnapshot exists");
             return list ;
         } else {
             for (DataSnapshot snapshot : dataSnapshot.getChildren()){

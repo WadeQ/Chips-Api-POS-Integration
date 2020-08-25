@@ -4,6 +4,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -16,14 +17,14 @@ import timber.log.Timber
 
 
 @BindingAdapter("paymentsBindingAdapter")
-fun bindPaymentDetailsAdapter(recyclerView: RecyclerView, paymentDetails: PagedList<PaymentDetails>?){
+fun bindPaymentDetailsAdapter(recyclerView: RecyclerView, paymentDetails: List<PaymentDetails>?){
     val adapter = recyclerView.adapter as ChipsPaymentAdapter
     Timber.d("binding adapter list size is: ${paymentDetails?.size}")
     adapter.submitList(paymentDetails)
 }
 
 @BindingAdapter("transactionsBindingAdapter")
-fun bindTransactionsDetailsAdapter(recyclerView: RecyclerView, transactions: PagedList<TransactionDetails>?){
+fun bindTransactionsDetailsAdapter(recyclerView: RecyclerView, transactions: List<TransactionDetails>?){
     val adapter = recyclerView.adapter as ChipsTransactionsAdapter
     Timber.d("binding adapter list size is: ${transactions?.size}")
     adapter.submitList(transactions)
