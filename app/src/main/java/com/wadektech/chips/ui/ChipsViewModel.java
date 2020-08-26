@@ -1,7 +1,6 @@
 package com.wadektech.chips.ui;
 
 import androidx.lifecycle.ViewModel;
-
 import com.wadektech.chips.data.RemoteRepository;
 import com.wadektech.chips.data.local.models.PaymentDetails;
 import com.wadektech.chips.data.local.models.TransactionDetails;
@@ -33,7 +32,7 @@ public class ChipsViewModel extends ViewModel {
     }
 
     public void getPaymentDetailsByTokenId(String tokenId) {
-        remoteRepository.searchPaymentDetailsByTokenIdFromLocal(tokenId);
+        //remoteRepository.searchPaymentDetailsByTokenIdFromLocal(tokenId);
     }
 
     public void getTransactionDetailsBySiteRefInfo(String siteRef) {

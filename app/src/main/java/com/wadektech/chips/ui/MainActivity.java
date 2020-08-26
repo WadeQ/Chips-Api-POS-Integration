@@ -91,9 +91,9 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
         TokenReqDto req  = new TokenReqDto();
         req.setRequestId("test234");
-        req.setDueDate("2020-08-19");
+        req.setDueDate("2020-08-25");
         req.setDescription("Iron box");
-        req.setExpiryTime("2020-08-20T09:05:41.366Z");
+        req.setExpiryTime("2020-08-26T09:05:41.366Z");
         req.setAmount(Integer.parseInt(amt));
         req.setPayeeRefInfo("string");
         req.setPayeeCategory1("string");
@@ -128,12 +128,13 @@ public class MainActivity extends AppCompatActivity {
                         Timber.d("Response status code is %s", tokenResDto.getStatus());
                         String encodedQr = tokenResDto.getTokenImage();
                         int amount = tokenResDto.getAmount();
-                        String description = tokenResDto.getStatus();
-                        String date = tokenResDto.getDueDate();
+                        String requestID = tokenResDto.getRequestId();
+                        String tokenID = tokenResDto.getTokenId();
+                        String expiryTime = tokenResDto.getExpiryTime();
                         Intent intent = new Intent(getApplicationContext(), TokensDetailsActivity.class);
                         intent.putExtra("encoded_image",encodedQr);
-                        intent.putExtra("description",description);
-                        intent.putExtra("date",date);
+                        intent.putExtra("requestId",requestID);
+                        intent.putExtra("tokenId",tokenID);
                         intent.putExtra("amount",amount);
                         startActivity(intent);
 
