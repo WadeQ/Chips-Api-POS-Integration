@@ -71,8 +71,8 @@ public class RemoteRepository {
                          //       .getInstance(App.getAppContext())
                           //      .paymentDetailsDao()
                           //      .savePaymentDetails(paymentDetailsList);
-                        DatabaseReference myRootRef = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference paymentsRef =  myRootRef.child("PaymentsDetails");
+                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference paymentsRef =  rootRef.child("PaymentsDetails");
                         paymentsRef.setValue(paymentDetailsList);
                     }
 
@@ -114,8 +114,8 @@ public class RemoteRepository {
                          //               .getInstance(App.getAppContext())
                          //               .transactionDetailsDao()
                           //              .saveTransactionDetails(transactionDetails);
-                        DatabaseReference myRootRef = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference transactionsRef =  myRootRef.child("TransactionsDetails");
+                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference transactionsRef =  rootRef.child("TransactionsDetails");
                         transactionsRef.setValue(transactionDetails);
                     }
 
