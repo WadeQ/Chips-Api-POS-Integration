@@ -11,7 +11,7 @@ public class PaymentDetails {
     private int id;
     @SerializedName("amount")
     @Expose
-    private Integer amount;
+    private Double amount;
     @SerializedName("description")
     @Expose
     private String description;
@@ -46,9 +46,13 @@ public class PaymentDetails {
     @Expose
     private String tokenImage;
 
-    public PaymentDetails(Integer amount, String description, String expiryTime, String payeeAccountUuid,
+    public PaymentDetails() {
+    }
+
+    public PaymentDetails(int id, Double amount, String description, String expiryTime, String payeeAccountUuid,
                           String payeeRefInfo, String payeeSiteName, String payeeSiteRefInfo, Boolean requestTip,
                           String status, String systemRefInfo, String tokenId, String tokenImage) {
+        this.id = id;
         this.amount = amount;
         this.description = description;
         this.expiryTime = expiryTime;
@@ -71,11 +75,11 @@ public class PaymentDetails {
         this.id = id;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

@@ -3,15 +3,16 @@ package com.wadektech.chips.ui;
 import androidx.lifecycle.ViewModel;
 import com.wadektech.chips.data.RemoteRepository;
 import com.wadektech.chips.data.local.models.PaymentDetails;
+import com.wadektech.chips.data.local.models.Payments;
 import com.wadektech.chips.data.local.models.TransactionDetails;
 import com.wadektech.chips.utils.FirebaseRealtimeDatabaseQueryLiveData;
 
 
 public class ChipsViewModel extends ViewModel {
     public RemoteRepository remoteRepository ;
-   // private final LiveData<PagedList<PaymentDetails>> paymentDetailsList;
     public FirebaseRealtimeDatabaseQueryLiveData<PaymentDetails> paymentDetailsList ;
     public FirebaseRealtimeDatabaseQueryLiveData<TransactionDetails> transactionDetailsList ;
+   //private final LiveData<PagedList<PaymentDetails>> paymentDetailsList;
     //private final LiveData<PagedList<TransactionDetails>> transactionDetailsList;
 
     public ChipsViewModel() {
@@ -36,7 +37,7 @@ public class ChipsViewModel extends ViewModel {
     }
 
     public void getTransactionDetailsBySiteRefInfo(String siteRef) {
-        remoteRepository.searchTransactionDetailsBySiteRefInfo(siteRef);
+        //remoteRepository.searchTransactionDetailsBySiteRefInfo(siteRef);
     }
 
     public void getPaymentDetailsByTokenIdLiveFromRemote(String token){

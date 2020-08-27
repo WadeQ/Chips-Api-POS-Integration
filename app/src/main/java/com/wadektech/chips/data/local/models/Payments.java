@@ -2,9 +2,11 @@ package com.wadektech.chips.data.local.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.Collections;
 import java.util.List;
 
 public class Payments {
+
     @SerializedName("pageSize")
     @Expose
     private Integer pageSize;
@@ -19,7 +21,7 @@ public class Payments {
     private Integer totalElements;
     @SerializedName("values")
     @Expose
-    private List<PaymentDetails> values = null;
+    private List<PaymentDetails> values;
 
     public Payments(Integer pageSize, Integer pageNumber, Integer totalPages, Integer totalElements,
                     List<PaymentDetails> values) {

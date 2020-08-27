@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.wadektech.chips.R;
 import com.wadektech.chips.data.local.models.PaymentDetails;
+import com.wadektech.chips.data.local.models.Payments;
 import com.wadektech.chips.data.local.models.TransactionDetails;
 import com.wadektech.chips.data.local.source.ChipsRoomDatabase;
 import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionReq;
@@ -50,7 +51,7 @@ public class RemoteRepository {
      * to be accessed by user.
      */
     public void fetchPaymentDetails(){
-        Observable<List<PaymentDetails>> paymentDetailsObservable = PaymentDetailsServiceImpl
+        Observable<Payments> paymentDetailsObservable = PaymentDetailsServiceImpl
                 .getINSTANCE()
                 .getPaymentRequestDetails()
                 .getPaymentDetailsByCriteria(key);
@@ -58,15 +59,15 @@ public class RemoteRepository {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
-                .subscribe(new Observer<List<PaymentDetails>>() {
+                .subscribe(new Observer<Payments>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(List<PaymentDetails> paymentDetailsList) {
-                        Timber.d("onNext() payments: %s", paymentDetailsList.size());
+                    public void onNext(Payments paymentDetailsList) {
+                        Timber.d("onNext() payments: %s", paymentDetailsList.getTotalElements());
                         //ChipsRoomDatabase
                          //       .getInstance(App.getAppContext())
                           //      .paymentDetailsDao()
@@ -296,7 +297,7 @@ public class RemoteRepository {
     }
 
     public FirebaseRealtimeDatabaseQueryLiveData<PaymentDetails> getAllPaymentDetailsFromDB(){
-        final DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("PaymentsDetails");
+        final DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("PaymentsDetails").child("values");
         return new FirebaseRealtimeDatabaseQueryLiveData<>(PaymentDetails.class, dRef);
     }
 

@@ -1,6 +1,7 @@
 package com.wadektech.chips.data.remote.source;
 
 import com.wadektech.chips.data.local.models.PaymentDetails;
+import com.wadektech.chips.data.local.models.Payments;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface PaymentDetailsService {
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("payments/requests")
-    Observable<List<PaymentDetails>> getPaymentDetailsByCriteria(
+    Observable<Payments> getPaymentDetailsByCriteria(
             @Header("Authorization") String authKey
     );
 
