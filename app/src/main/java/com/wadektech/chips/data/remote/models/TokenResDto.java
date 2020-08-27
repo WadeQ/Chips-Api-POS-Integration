@@ -30,7 +30,7 @@ public class TokenResDto implements Parcelable {
     private String expiryTime;
     @SerializedName("amount")
     @Expose
-    private Integer amount;
+    private Double amount;
     @SerializedName("payeeCategory1")
     @Expose
     private String payeeCategory1;
@@ -66,7 +66,7 @@ public class TokenResDto implements Parcelable {
     private String tokenImage;
 
     public TokenResDto(String uuid, String requestId, String created, String lastModified, String dueDate,
-                       String description, String expiryTime, Integer amount, String payeeCategory1,
+                       String description, String expiryTime, Double amount, String payeeCategory1,
                        String payeeCategory2, String payeeCategory3, String payeeRefInfo, String siteName,
                        String siteRefInfo, Boolean requestTip, Boolean useOnce, String status, String tokenId,
                        String tokenImage) {
@@ -102,7 +102,7 @@ public class TokenResDto implements Parcelable {
         if (in.readByte() == 0) {
             amount = null;
         } else {
-            amount = in.readInt();
+            amount = in.readDouble();
         }
         payeeCategory1 = in.readString();
         payeeCategory2 = in.readString();
@@ -132,7 +132,7 @@ public class TokenResDto implements Parcelable {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
-            dest.writeInt(amount);
+            dest.writeDouble(amount);
         }
         dest.writeString(payeeCategory1);
         dest.writeString(payeeCategory2);
@@ -192,7 +192,7 @@ public class TokenResDto implements Parcelable {
         return expiryTime;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 

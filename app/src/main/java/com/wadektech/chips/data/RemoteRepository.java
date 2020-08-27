@@ -5,8 +5,13 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.wadektech.chips.R;
 import com.wadektech.chips.data.local.models.PaymentDetails;
 import com.wadektech.chips.data.local.models.Payments;
@@ -19,7 +24,13 @@ import com.wadektech.chips.data.remote.source.PaymentDetailsServiceImpl;
 import com.wadektech.chips.data.remote.source.TransactionDetailsServiceImpl;
 import com.wadektech.chips.utils.App;
 import com.wadektech.chips.utils.FirebaseRealtimeDatabaseQueryLiveData;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -262,18 +273,28 @@ public class RemoteRepository {
      * This method is called when an we needs to retrieve the details of a previously submitted payment request
      * by providing the tokenId. This method will return, at most, one resulting API structure.
      */
-    public void searchPaymentDetailsByTokenIdFromLocal(String tokenId) {
-        PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
-                .setPageSize(30)
-                .setPrefetchDistance(5)
-                .build());
-        new LivePagedListBuilder<>(
-                ChipsRoomDatabase
-                        .getInstance(App.getAppContext())
-                        .paymentDetailsDao()
-                        .searchPaymentDetailsByTokenId(tokenId),
-                pagedListConfig)
-                .build();
+    public void searchPaymentDetailsByTokenIdFromFirebase(String tokenId) {
+        final DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("PaymentsDetails")
+                .child("values");
+        ArrayList<String> queryList = new ArrayList<>();
+        DatabaseReference values = dRef.child("values");
+        Query query = values.orderByChild("tokenId").startAt(tokenId).endAt(tokenId + "\uf8ff");
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    queryList.add(Objects.requireNonNull(postSnapshot.getValue()).toString());
+                }
+
+                Timber.d("searchPaymentDetailsByTokenIdFromFirebase: error is %s", queryList.size());
+
+            }
+
+            @Override
+            public void onCancelled(@NotNull DatabaseError databaseError) {
+                Timber.d("searchPaymentDetailsByTokenIdFromFirebase: returned results is %s", databaseError.getMessage());
+            }
+        });
     }
 
     /**

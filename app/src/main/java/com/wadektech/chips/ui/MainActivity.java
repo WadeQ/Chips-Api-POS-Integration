@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         req.setDueDate("2020-08-25");
         req.setDescription("Iron box");
         req.setExpiryTime("2020-08-26T09:05:41.366Z");
-        req.setAmount(Integer.parseInt(amt));
+        req.setAmount(Double.parseDouble(amt));
         req.setPayeeRefInfo("string");
         req.setPayeeCategory1("string");
         req.setPayeeCategory2("string");
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                     dialog.dismiss();
                         Timber.d("Response status code is %s", tokenResDto.getStatus());
                         String encodedQr = tokenResDto.getTokenImage();
-                        int amount = tokenResDto.getAmount();
+                        Double amount = tokenResDto.getAmount();
                         String requestID = tokenResDto.getRequestId();
                         String tokenID = tokenResDto.getTokenId();
                         String expiryTime = tokenResDto.getExpiryTime();
