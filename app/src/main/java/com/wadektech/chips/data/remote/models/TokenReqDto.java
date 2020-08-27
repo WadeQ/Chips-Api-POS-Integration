@@ -18,7 +18,7 @@ public class TokenReqDto {
     private String expiryTime;
     @SerializedName("amount")
     @Expose
-    private Integer amount;
+    private Double amount;
     @SerializedName("payeeCategory1")
     @Expose
     private String payeeCategory1;
@@ -85,11 +85,11 @@ public class TokenReqDto {
         this.expiryTime = expiryTime;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

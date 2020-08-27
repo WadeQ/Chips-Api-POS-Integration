@@ -33,7 +33,7 @@ public class ChipsViewModel extends ViewModel {
     }
 
     public void getPaymentDetailsByTokenId(String tokenId) {
-        //remoteRepository.searchPaymentDetailsByTokenIdFromLocal(tokenId);
+        remoteRepository.searchPaymentDetailsByTokenIdFromFirebase(tokenId);
     }
 
     public void getTransactionDetailsBySiteRefInfo(String siteRef) {

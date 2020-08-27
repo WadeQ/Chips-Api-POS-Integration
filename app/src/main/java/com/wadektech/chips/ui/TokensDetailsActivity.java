@@ -19,7 +19,7 @@ public class TokensDetailsActivity extends AppCompatActivity {
     ImageView qrCodeImage;
     TextView responseText, mDesc, mDate;
     String encoded_image;
-    int amount;
+    Double amount;
     String requestId;
     String tokenId;
 
@@ -37,7 +37,7 @@ public class TokensDetailsActivity extends AppCompatActivity {
         //grab token from intent
         Intent intent = getIntent();
         encoded_image = intent.getStringExtra("encoded_image");
-        amount = intent.getIntExtra("amount",0);
+        amount = intent.getDoubleExtra("amount",0);
         requestId = intent.getStringExtra("requestId");
         tokenId = intent.getStringExtra("tokenId");
         assert encoded_image!= null;
