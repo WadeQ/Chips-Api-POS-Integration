@@ -17,7 +17,10 @@ import timber.log.Timber;
 
 public class TokensDetailsActivity extends AppCompatActivity {
     ImageView qrCodeImage;
-    TextView responseText, mDesc, mDate;
+    TextView responseText, mSiteRef;
+    TextView mDesc;
+    TextView mDate;
+    String siteRefInfo;
     String encoded_image;
     Double amount;
     String requestId;
@@ -33,6 +36,7 @@ public class TokensDetailsActivity extends AppCompatActivity {
         responseText = findViewById(R.id.tv_token_amount);
         mDesc = findViewById(R.id.tv_token_desc);
         mDate = findViewById(R.id.tv_token_date);
+        mSiteRef = findViewById(R.id.tv_site_ref);
 
         //grab token from intent
         Intent intent = getIntent();
@@ -40,6 +44,7 @@ public class TokensDetailsActivity extends AppCompatActivity {
         amount = intent.getDoubleExtra("amount",0);
         requestId = intent.getStringExtra("requestId");
         tokenId = intent.getStringExtra("tokenId");
+        siteRefInfo = intent.getStringExtra("siteRef");
         assert encoded_image!= null;
         Bitmap image = decodeImage(encoded_image);
         qrCodeImage.setImageBitmap(image);
@@ -48,6 +53,7 @@ public class TokensDetailsActivity extends AppCompatActivity {
        responseText.setText("Amount: "+amount);
        mDate.setText("Token ID: "+tokenId);
        mDesc.setText("Request ID: "+requestId);
+       mSiteRef.setText("SiteRefInfo: "+siteRefInfo);
 
     }
 
