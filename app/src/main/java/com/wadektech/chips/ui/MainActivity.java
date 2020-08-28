@@ -91,16 +91,16 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
         TokenReqDto req  = new TokenReqDto();
         req.setRequestId("test234");
-        req.setDueDate("2020-08-25");
+        req.setDueDate("2020-08-28");
         req.setDescription("Iron box");
-        req.setExpiryTime("2020-08-26T09:05:41.366Z");
+        req.setExpiryTime("2020-08-29T09:05:41.366Z");
         req.setAmount(Double.parseDouble(amt));
         req.setPayeeRefInfo("string");
         req.setPayeeCategory1("string");
         req.setPayeeCategory2("string");
         req.setPayeeCategory3("string");
         req.setSiteName("string");
-        req.setSiteRefInfo("string");
+        req.setSiteRefInfo("324567865432");
         req.setRequestTip(false);
         req.setUseOnce(true);
         req.setNotifyUrl("https://us-central1-chips-d4dae.cloudfunctions.net/updateStatus");
@@ -130,12 +130,13 @@ public class MainActivity extends AppCompatActivity {
                         Double amount = tokenResDto.getAmount();
                         String requestID = tokenResDto.getRequestId();
                         String tokenID = tokenResDto.getTokenId();
-                        String expiryTime = tokenResDto.getExpiryTime();
+                        String siteRefInfo = tokenResDto.getSiteRefInfo();
                         Intent intent = new Intent(getApplicationContext(), TokensDetailsActivity.class);
                         intent.putExtra("encoded_image",encodedQr);
                         intent.putExtra("requestId",requestID);
                         intent.putExtra("tokenId",tokenID);
                         intent.putExtra("amount",amount);
+                        intent.putExtra("siteRef",siteRefInfo);
                         startActivity(intent);
 
                     }
