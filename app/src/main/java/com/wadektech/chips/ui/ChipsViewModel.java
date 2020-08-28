@@ -3,7 +3,6 @@ package com.wadektech.chips.ui;
 import androidx.lifecycle.ViewModel;
 import com.wadektech.chips.data.RemoteRepository;
 import com.wadektech.chips.data.local.models.PaymentDetails;
-import com.wadektech.chips.data.local.models.Payments;
 import com.wadektech.chips.data.local.models.TransactionDetails;
 import com.wadektech.chips.utils.FirebaseRealtimeDatabaseQueryLiveData;
 

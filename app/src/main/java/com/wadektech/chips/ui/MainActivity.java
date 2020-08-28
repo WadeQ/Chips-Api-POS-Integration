@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         req.setDescription("Iron box");
         req.setExpiryTime("2020-08-29T09:05:41.366Z");
         req.setAmount(Double.parseDouble(amt));
-        req.setPayeeRefInfo("string");
+        req.setPayeeRefInfo("324567865432");
         req.setPayeeCategory1("string");
         req.setPayeeCategory2("string");
         req.setPayeeCategory3("string");
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                         Double amount = tokenResDto.getAmount();
                         String requestID = tokenResDto.getRequestId();
                         String tokenID = tokenResDto.getTokenId();
-                        String siteRefInfo = tokenResDto.getSiteRefInfo();
+                        String siteRefInfo = tokenResDto.getPayeeRefInfo();
                         Intent intent = new Intent(getApplicationContext(), TokensDetailsActivity.class);
                         intent.putExtra("encoded_image",encodedQr);
                         intent.putExtra("requestId",requestID);
