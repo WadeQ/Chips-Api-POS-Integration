@@ -10,6 +10,7 @@
             type="com.wadektech.chips.ui.ChipsViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/trans_activity"
         android:layout_width="match_parent"
         android:background="#FEEAE6"
         android:layout_height="match_parent"

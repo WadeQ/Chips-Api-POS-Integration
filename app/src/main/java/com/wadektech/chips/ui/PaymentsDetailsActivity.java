@@ -1,11 +1,13 @@
 package com.wadektech.chips.ui;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +21,14 @@ import com.wadektech.chips.data.RemoteRepository;
 import com.wadektech.chips.data.local.models.PaymentDetails;
 import com.wadektech.chips.data.remote.source.PaymentDetailsServiceImpl;
 import com.wadektech.chips.databinding.ActivityPaymentsDetailsBinding;
+import com.wadektech.chips.utils.SnackBarUtilsKt;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class PaymentsDetailsActivity extends AppCompatActivity {
     ActivityPaymentsDetailsBinding binding ;
@@ -116,9 +120,13 @@ public class PaymentsDetailsActivity extends AppCompatActivity {
                   }
                 }
 
+                @RequiresApi(api = Build.VERSION_CODES.P)
                 @Override
                 public void onError(Throwable e) {
                     dialog.dismiss();
+                  Timber.d("getPaymentDetailsByTokenIdFromRemote :error status for payment details is %s", e.getMessage());
+                  SnackBarUtilsKt.snackbar(requireViewById(R.id.payments_activity),"Error getting queried payment details...");
+
                 }
 
                 @Override
