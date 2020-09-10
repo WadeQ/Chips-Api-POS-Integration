@@ -17,14 +17,14 @@ import timber.log.Timber
 @BindingAdapter("paymentsBindingAdapter")
 fun bindPaymentDetailsAdapter(recyclerView: RecyclerView, paymentDetails: List<PaymentDetails>?){
     val adapter = recyclerView.adapter as ChipsPaymentAdapter
-    Timber.d("binding adapter list size is: ${paymentDetails?.size}")
+    Timber.d("binding payments adapter list size is: ${paymentDetails?.size}")
     adapter.submitList(paymentDetails)
 }
 
 @BindingAdapter("transactionsBindingAdapter")
 fun bindTransactionsDetailsAdapter(recyclerView: RecyclerView, transactions: List<TransactionDetails>?){
     val adapter = recyclerView.adapter as ChipsTransactionsAdapter
-    Timber.d("binding adapter list size is: ${transactions?.size}")
+    Timber.d("binding transactions adapter list size is: ${transactions?.size}")
     adapter.submitList(transactions)
 }
 

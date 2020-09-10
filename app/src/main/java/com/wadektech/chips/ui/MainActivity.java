@@ -14,8 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.wadektech.chips.R;
+import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionReq;
+import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionRes;
 import com.wadektech.chips.data.remote.models.TokenReqDto;
 import com.wadektech.chips.data.remote.models.TokenResDto;
+import com.wadektech.chips.data.remote.source.MerchantPaymentCompletionServiceImpl;
 import com.wadektech.chips.data.remote.source.PaymentRequestServiceImpl;
 import com.wadektech.chips.utils.Constants;
 import java.nio.charset.StandardCharsets;
@@ -30,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     Button confirmTransaction, mTransactions, mPayments;
     NiftyDialogBuilder materialDesignAnimatedDialog;
     EditText mAmount;
+    String key = " Basic YWE0MjkxZWItMjczOC00ZWQ2LTg3OTItZjc5MTkyMTNiNTExOjM0YzFiYTQ0LWFkNGYtNGNhMy1hMzhiLTRmYTcyNjIyZmFhNA==";
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -91,9 +96,9 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
         TokenReqDto req  = new TokenReqDto();
         req.setRequestId("test234");
-        req.setDueDate("2020-08-28");
+        req.setDueDate("2020-08-29");
         req.setDescription("Iron box");
-        req.setExpiryTime("2020-08-29T09:05:41.366Z");
+        req.setExpiryTime("2020-08-30T09:05:41.366Z");
         req.setAmount(Double.parseDouble(amt));
         req.setPayeeRefInfo("324567865432");
         req.setPayeeCategory1("string");
@@ -155,9 +160,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Construct and send basic auth headers
-    public static String getAuthToken() {
-        byte[] data;
-        data = (Constants.UUID + ":" + Constants.API_KEY).getBytes(StandardCharsets.UTF_8);
-        return " Basic " + Base64.encodeToString(data, Base64.NO_WRAP);
-    }
+   // public static String getAuthToken() {
+    //    byte[] data;
+    //    data = (Constants.UUID + ":" + Constants.API_KEY).getBytes(StandardCharsets.UTF_8);
+    //    return " Basic " + Base64.encodeToString(data, Base64.NO_WRAP);
+    //}
 }
