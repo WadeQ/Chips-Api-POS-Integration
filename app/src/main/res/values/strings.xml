@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Chips</string>
+    <string name="dismiss">DISMISS</string>
+    <string name="token_id">Token ID</string>
+    <string name="expiry_time">Expiry Time</string>
+    <string name="payment_status">Payment Status</string>
+    <string name="item_description">Item description</string>
+    <string name="item_amount">Item amount</string>
+    <string name="payee_reference">Payee reference</string>
 </resources>
