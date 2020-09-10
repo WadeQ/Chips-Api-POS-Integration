@@ -53,6 +53,7 @@ public class PaymentsDetailsActivity extends AppCompatActivity {
         });
 
     }
+
     /**
      * @param tokenId
      * This method is called when an external system needs to retrieve the details of a previously submitted
