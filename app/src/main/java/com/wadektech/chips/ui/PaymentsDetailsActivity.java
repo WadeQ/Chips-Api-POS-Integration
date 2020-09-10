@@ -4,10 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.TextView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.wadektech.chips.R;
 import com.wadektech.chips.data.RemoteRepository;
 import com.wadektech.chips.data.local.models.PaymentDetails;
@@ -23,6 +29,8 @@ import io.reactivex.schedulers.Schedulers;
 public class PaymentsDetailsActivity extends AppCompatActivity {
     ActivityPaymentsDetailsBinding binding ;
     ChipsViewModel chipsViewModel;
+    Button mDismiss ;
+    TextView mStatus, mToken, mPayee, mDescription, mExpiry, mAmount ;
     String key = " Basic YWE0MjkxZWItMjczOC00ZWQ2LTg3OTItZjc5MTkyMTNiNTExOjM0YzFiYTQ0LWFkNGYtNGNhMy1hMzhiLTRmYTcyNjIyZmFhNA==";
 
 
@@ -36,6 +44,13 @@ public class PaymentsDetailsActivity extends AppCompatActivity {
         binding.setViewModel(chipsViewModel);
         ChipsPaymentAdapter chipsPaymentAdapter = new ChipsPaymentAdapter();
         binding.rvPayments.setAdapter(chipsPaymentAdapter);
+
+        mStatus = findViewById(R.id.tv_status_details) ;
+        mAmount = findViewById(R.id.tv_amount_details);
+        mToken = findViewById(R.id.tv_token_id_details);
+        mPayee = findViewById(R.id.tv_payee_ref_details);
+        mDescription = findViewById(R.id.tv_description_details);
+        mExpiry = findViewById(R.id.tv_expiry_time_details);
 
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -78,11 +93,37 @@ public class PaymentsDetailsActivity extends AppCompatActivity {
 
                 }
 
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void onNext(PaymentDetails paymentDetailsList) {
                     dialog.dismiss();
-                    //display result
+                   //display result
+                  if (paymentDetailsList != null){
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(PaymentsDetailsActivity.this,
+                        R.style.BottomSheetDialogTheme);
+                    View bottomSheetView = LayoutInflater.from(getApplicationContext())
+                        .inflate(R.layout.layout_bottom_sheet_dialog, findViewById(R.id.bottom_sheet_dialog), false);
 
+                    TextView description = bottomSheetView.findViewById(R.id.tv_description_details);
+                    description.setText("Item Description: "+paymentDetailsList.getDescription());
+                    TextView expiry = bottomSheetView.findViewById(R.id.tv_expiry_time_details);
+                    expiry.setText("Expiration date/time: "+paymentDetailsList.getExpiryTime());
+                    TextView siteRef = bottomSheetView.findViewById(R.id.tv_payee_ref_details);
+                    siteRef.setText("Site Reference: "+paymentDetailsList.getPayeeSiteRefInfo());
+                    TextView status = bottomSheetView.findViewById(R.id.tv_status_details);
+                    status.setText("Status: "+paymentDetailsList.getStatus());
+                    TextView token = bottomSheetView.findViewById(R.id.tv_token_id_details);
+                    token.setText("Token id: "+paymentDetailsList.getTokenId());
+                    TextView amount = bottomSheetView.findViewById(R.id.tv_amount_details);
+                    amount.setText("Amount paid: "+paymentDetailsList.getAmount());
+
+                    bottomSheetView.findViewById(R.id.btn_dismiss).setOnClickListener(view -> {
+                      bottomSheetDialog.dismiss();
+                    });
+
+                    bottomSheetDialog.setContentView(bottomSheetView);
+                    bottomSheetDialog.show();
+                  }
                 }
 
                 @Override
