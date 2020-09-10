@@ -31,17 +31,13 @@ public class ChipsViewModel extends ViewModel {
         return transactionDetailsList;
     }
 
-    public void getPaymentDetailsByTokenId(String tokenId) {
-        remoteRepository.searchPaymentDetailsByTokenIdFromFirebase(tokenId);
-    }
-
     public void getTransactionDetailsBySiteRefInfo(String siteRef) {
         //remoteRepository.searchTransactionDetailsBySiteRefInfo(siteRef);
     }
 
-    public void getPaymentDetailsByTokenIdLiveFromRemote(String token){
-        remoteRepository.getPaymentDetailsByTokenIdFromRemote(token);
-    }
+   // public void getPaymentDetailsByTokenIdLiveFromRemote(String token){
+    //    remoteRepository.getPaymentDetailsByTokenIdFromRemote(token);
+    //}
 
 }
 
