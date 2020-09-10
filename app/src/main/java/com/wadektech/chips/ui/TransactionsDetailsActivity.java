@@ -114,7 +114,8 @@ public class TransactionsDetailsActivity extends AppCompatActivity {
                public void onError(Throwable e) {
                    dialog.dismiss();
                  Timber.d("getTransactionDetailsBySiteRefInfo :error status is %s", e.getMessage());
-                 SnackBarUtilsKt.snackbar(requireViewById(R.id.trans_activity),"Error getting queried transaction details...");
+                 SnackBarUtilsKt.snackbar(requireViewById(R.id.trans_activity),
+                     "Error getting queried transaction details, make sure the site reference used is the correct one...");
 
                }
 
