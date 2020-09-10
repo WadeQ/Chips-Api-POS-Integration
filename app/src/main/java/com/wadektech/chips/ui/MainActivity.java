@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -14,14 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.wadektech.chips.R;
-import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionReq;
-import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionRes;
 import com.wadektech.chips.data.remote.models.TokenReqDto;
 import com.wadektech.chips.data.remote.models.TokenResDto;
-import com.wadektech.chips.data.remote.source.MerchantPaymentCompletionServiceImpl;
 import com.wadektech.chips.data.remote.source.PaymentRequestServiceImpl;
-import com.wadektech.chips.utils.Constants;
-import java.nio.charset.StandardCharsets;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
