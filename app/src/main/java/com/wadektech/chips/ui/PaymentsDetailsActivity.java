@@ -29,10 +29,7 @@ import io.reactivex.schedulers.Schedulers;
 public class PaymentsDetailsActivity extends AppCompatActivity {
     ActivityPaymentsDetailsBinding binding ;
     ChipsViewModel chipsViewModel;
-    Button mDismiss ;
-    TextView mStatus, mToken, mPayee, mDescription, mExpiry, mAmount ;
     String key = " Basic YWE0MjkxZWItMjczOC00ZWQ2LTg3OTItZjc5MTkyMTNiNTExOjM0YzFiYTQ0LWFkNGYtNGNhMy1hMzhiLTRmYTcyNjIyZmFhNA==";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +41,6 @@ public class PaymentsDetailsActivity extends AppCompatActivity {
         binding.setViewModel(chipsViewModel);
         ChipsPaymentAdapter chipsPaymentAdapter = new ChipsPaymentAdapter();
         binding.rvPayments.setAdapter(chipsPaymentAdapter);
-
-        mStatus = findViewById(R.id.tv_status_details) ;
-        mAmount = findViewById(R.id.tv_amount_details);
-        mToken = findViewById(R.id.tv_token_id_details);
-        mPayee = findViewById(R.id.tv_payee_ref_details);
-        mDescription = findViewById(R.id.tv_description_details);
-        mExpiry = findViewById(R.id.tv_expiry_time_details);
 
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -97,7 +87,7 @@ public class PaymentsDetailsActivity extends AppCompatActivity {
                 @Override
                 public void onNext(PaymentDetails paymentDetailsList) {
                     dialog.dismiss();
-                   //display result
+                   //display result using a bottom sheet dialog
                   if (paymentDetailsList != null){
                     BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(PaymentsDetailsActivity.this,
                         R.style.BottomSheetDialogTheme);
@@ -129,7 +119,6 @@ public class PaymentsDetailsActivity extends AppCompatActivity {
                 @Override
                 public void onError(Throwable e) {
                     dialog.dismiss();
-
                 }
 
                 @Override

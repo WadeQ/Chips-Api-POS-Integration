@@ -11,8 +11,7 @@ public class ChipsViewModel extends ViewModel {
     public RemoteRepository remoteRepository ;
     public FirebaseRealtimeDatabaseQueryLiveData<PaymentDetails> paymentDetailsList ;
     public FirebaseRealtimeDatabaseQueryLiveData<TransactionDetails> transactionDetailsList ;
-   //private final LiveData<PagedList<PaymentDetails>> paymentDetailsList;
-    //private final LiveData<PagedList<TransactionDetails>> transactionDetailsList;
+
 
     public ChipsViewModel() {
         remoteRepository = RemoteRepository.getInstance();
@@ -30,14 +29,6 @@ public class ChipsViewModel extends ViewModel {
     public FirebaseRealtimeDatabaseQueryLiveData<TransactionDetails> getTransactionDetails() {
         return transactionDetailsList;
     }
-
-    public void getTransactionDetailsBySiteRefInfo(String siteRef) {
-        //remoteRepository.searchTransactionDetailsBySiteRefInfo(siteRef);
-    }
-
-   // public void getPaymentDetailsByTokenIdLiveFromRemote(String token){
-    //    remoteRepository.getPaymentDetailsByTokenIdFromRemote(token);
-    //}
 
 }
 

@@ -19,4 +19,10 @@ public interface TransactionDetailsService {
     Observable<List<TransactionDetails>> getTransactionDetailsAsync(
             @Header("Authorization") String authKey
     );
+
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @GET("transactions")
+    Observable<TransactionDetails> getTransactionDetailsBySiteRefAsync(
+        @Header("Authorization") String authKey
+    );
 }

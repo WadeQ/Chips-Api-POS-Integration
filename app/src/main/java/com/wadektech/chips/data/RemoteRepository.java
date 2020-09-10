@@ -15,7 +15,7 @@ import com.wadektech.chips.data.local.models.TransactionDetails;
 import com.wadektech.chips.data.local.source.ChipsRoomDatabase;
 import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionReq;
 import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionRes;
-import com.wadektech.chips.data.remote.source.MerchantPaymentCompletionServiceImpl;
+import com.wadektech.chips.data.remote.source.PaymentReceiptStatusImpl;
 import com.wadektech.chips.data.remote.source.PaymentDetailsServiceImpl;
 import com.wadektech.chips.data.remote.source.TransactionDetailsServiceImpl;
 import com.wadektech.chips.utils.App;
@@ -204,10 +204,10 @@ public class RemoteRepository {
     req.setTokenId("string");
     req.setPayeeRefInfo("string");
 
-    Observable<MerchantPaymentCompletionRes> merchantPaymentCompletionResObservable = MerchantPaymentCompletionServiceImpl
+    Observable<MerchantPaymentCompletionRes> merchantPaymentCompletionResObservable = PaymentReceiptStatusImpl
         .getINSTANCE()
-        .getMerchantPaymentNotification()
-        .notifyPaymentCompletion(key,req);
+        .getPaymentReceipt()
+        .notifyPaymentCompletionWithReceipt(key,req);
 
     merchantPaymentCompletionResObservable.subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
