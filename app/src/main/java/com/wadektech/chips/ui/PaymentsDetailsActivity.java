@@ -125,7 +125,8 @@ public class PaymentsDetailsActivity extends AppCompatActivity {
                 public void onError(Throwable e) {
                     dialog.dismiss();
                   Timber.d("getPaymentDetailsByTokenIdFromRemote :error status for payment details is %s", e.getMessage());
-                  SnackBarUtilsKt.snackbar(requireViewById(R.id.payments_activity),"Error getting queried payment details...");
+                  SnackBarUtilsKt.snackbar(requireViewById(R.id.payments_activity),
+                      "Error getting queried payment details, make sure the token id used is correct...");
 
                 }
 
