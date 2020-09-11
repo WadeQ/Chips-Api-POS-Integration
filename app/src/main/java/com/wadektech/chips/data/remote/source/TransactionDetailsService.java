@@ -6,6 +6,7 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Path;
 
 /**
  * This endpoint is called when a client/external system needs to retrieve the details of the transaction related
@@ -21,8 +22,9 @@ public interface TransactionDetailsService {
     );
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
-    @GET("transactions")
+    @GET("transactions/{siteRef}")
     Observable<TransactionDetails> getTransactionDetailsBySiteRefAsync(
-        @Header("Authorization") String authKey
+        @Header("Authorization") String authKey,
+         @Path("siteRef") String siteRef
     );
 }

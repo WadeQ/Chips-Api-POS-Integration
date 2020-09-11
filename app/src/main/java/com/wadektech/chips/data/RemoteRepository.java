@@ -71,10 +71,6 @@ public class RemoteRepository {
                     @Override
                     public void onNext(Payments paymentDetailsList) {
                         Timber.d("onNext() payments: %s", paymentDetailsList.getTotalElements());
-                        //ChipsRoomDatabase
-                         //       .getInstance(App.getAppContext())
-                          //      .paymentDetailsDao()
-                          //      .savePaymentDetails(paymentDetailsList);
                         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                         DatabaseReference paymentsRef =  rootRef.child("PaymentsDetails");
                         paymentsRef.setValue(paymentDetailsList);
@@ -114,10 +110,6 @@ public class RemoteRepository {
                     @Override
                     public void onNext(List<TransactionDetails> transactionDetails) {
                         Timber.d("Transactions onNext(): %s", transactionDetails.size());
-                        //ChipsRoomDatabase
-                         //               .getInstance(App.getAppContext())
-                         //               .transactionDetailsDao()
-                          //              .saveTransactionDetails(transactionDetails);
                         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                         DatabaseReference transactionsRef =  rootRef.child("TransactionsDetails");
                         transactionsRef.setValue(transactionDetails);
@@ -138,6 +130,7 @@ public class RemoteRepository {
     /**
      * @return LiveData PagedList of payment details from Room database.
      */
+    /*
     public LiveData<PagedList<PaymentDetails>> getPaymentDetailsFromLocal() {
         PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
                 .setPageSize(30)
@@ -155,6 +148,7 @@ public class RemoteRepository {
     /**
      * @return a LiveData PagedList of all transactions cached locally and emits data for display in rv.
      */
+    /*
     public LiveData<PagedList<TransactionDetails>> getTransactionDetailsFromLocal() {
         PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
                 .setPageSize(30)
@@ -170,11 +164,12 @@ public class RemoteRepository {
     }
 
     /**
-     * @param siteRef
+     * //@param siteRef
      * This method is called when a client needs to retrieve the details of the transaction
      * related to a previously submitted request. The Various parameters are available to filter the list, and,
      * depending on the criteria, zero or more results will be returned.
      */
+    /*
     public void searchTransactionDetailsBySiteRefInfo(String siteRef) {
         PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
                 .setPageSize(30)

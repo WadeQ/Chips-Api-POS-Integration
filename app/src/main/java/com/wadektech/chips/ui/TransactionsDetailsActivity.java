@@ -74,7 +74,7 @@ public class TransactionsDetailsActivity extends AppCompatActivity {
        Observable<TransactionDetails> transactionDetailsObservable = TransactionDetailsServiceImpl
            .getINSTANCE()
            .getTransactionRequestDetails()
-           .getTransactionDetailsBySiteRefAsync(key);
+           .getTransactionDetailsBySiteRefAsync(key,siteRef);
        transactionDetailsObservable.subscribeOn(Schedulers.io())
            .observeOn(AndroidSchedulers.mainThread())
            .unsubscribeOn(Schedulers.io())
@@ -95,6 +95,7 @@ public class TransactionsDetailsActivity extends AppCompatActivity {
                    View view = LayoutInflater.from(getApplicationContext())
                        .inflate(R.layout.layout_bottom_sheet_dialog,findViewById(R.id.bottom_sheet_dialog),false);
                    TextView requestId = view.findViewById(R.id.tv_amount_details);
+
                    requestId.setText("Transaction Request id: "+transactionDetails.getRequestId());
                    TextView feeAmount = view.findViewById(R.id.tv_token_id_details);
                    feeAmount.setText("Transaction Fee Amount: "+transactionDetails.getFeeAmount());
@@ -106,13 +107,20 @@ public class TransactionsDetailsActivity extends AppCompatActivity {
                    gratuityAmount.setText("Transactions Gratuity Amount: "+transactionDetails.getGratuityAmount());
                    TextView payeeSiteRefInfo = view.findViewById(R.id.tv_description_details);
                    payeeSiteRefInfo.setText("Transactions PayeeSiteRefInfo: "+transactionDetails.getPayeeSiteRefInfo());
+
+                   view.setOnClickListener(view1 -> {
+                     dialog.dismiss();
+                   });
+
+                   bottomSheetDialog.setContentView(view);
+                   bottomSheetDialog.show();
                  }
                }
 
                @RequiresApi(api = Build.VERSION_CODES.P)
                @Override
                public void onError(Throwable e) {
-                   dialog.dismiss();
+                 dialog.dismiss();
                  Timber.d("getTransactionDetailsBySiteRefInfo :error status is %s", e.getMessage());
                  SnackBarUtilsKt.snackbar(requireViewById(R.id.trans_activity),
                      "Error getting queried transaction details, make sure the site reference used is the correct one...");

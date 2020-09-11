@@ -90,7 +90,7 @@ public class PaymentsDetailsActivity extends AppCompatActivity {
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onNext(PaymentDetails paymentDetailsList) {
-                    dialog.dismiss();
+                  dialog.dismiss();
                    //display result using a bottom sheet dialog
                   if (paymentDetailsList != null){
                     BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(PaymentsDetailsActivity.this,
@@ -123,7 +123,7 @@ public class PaymentsDetailsActivity extends AppCompatActivity {
                 @RequiresApi(api = Build.VERSION_CODES.P)
                 @Override
                 public void onError(Throwable e) {
-                    dialog.dismiss();
+                  dialog.dismiss();
                   Timber.d("getPaymentDetailsByTokenIdFromRemote :error status for payment details is %s", e.getMessage());
                   SnackBarUtilsKt.snackbar(requireViewById(R.id.payments_activity),
                       "Error getting queried payment details, make sure the token id used is correct...");
