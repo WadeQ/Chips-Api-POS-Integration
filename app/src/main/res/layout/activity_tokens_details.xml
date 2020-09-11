@@ -2,7 +2,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="#FEEAE6"
     android:layout_height="match_parent">
@@ -31,7 +30,6 @@
                     android:layout_height="250dp"
                     android:scaleType="fitCenter"
                     android:layout_marginTop="30dp"
-                    tools:src="@drawable/qrcode"
                     android:layout_marginBottom="16dp" />
 
                 <View
@@ -49,7 +47,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="1dp"
-                android:text="Amount $358"
+                android:text="@string/amount_shown"
                 android:padding="8dp"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
@@ -64,7 +62,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="1dp"
-                    android:text="Basket"
+                    android:text="@string/item_dec"
                     android:padding="8dp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
@@ -79,13 +77,12 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="1dp"
-                    android:text="22-12-12"
+                    android:text="@string/expiry_date"
                     android:padding="8dp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
-
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_site_ref"
@@ -95,7 +92,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="1dp"
-                    android:text="Site Ref"
+                    android:text="@string/site_ref"
                     android:padding="8dp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
@@ -103,7 +100,6 @@
                     android:textStyle="bold" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
-
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

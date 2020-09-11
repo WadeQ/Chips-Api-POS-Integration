@@ -91,7 +91,7 @@ public class PaymentsDetailsActivity extends AppCompatActivity {
                 @Override
                 public void onNext(PaymentDetails paymentDetailsList) {
                   dialog.dismiss();
-                   //display result using a bottom sheet dialog
+                  //display result using a bottom sheet dialog
                   if (paymentDetailsList != null){
                     BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(PaymentsDetailsActivity.this,
                         R.style.BottomSheetDialogTheme);

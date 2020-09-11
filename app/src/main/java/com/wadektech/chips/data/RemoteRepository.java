@@ -2,27 +2,15 @@ package com.wadektech.chips.data;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-
-import androidx.lifecycle.LiveData;
-import androidx.paging.LivePagedListBuilder;
-import androidx.paging.PagedList;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.wadektech.chips.data.local.models.PaymentDetails;
 import com.wadektech.chips.data.local.models.Payments;
-import com.wadektech.chips.data.local.models.TransactionDetails;
-import com.wadektech.chips.data.local.source.ChipsRoomDatabase;
 import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionReq;
 import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionRes;
-import com.wadektech.chips.data.remote.source.PaymentReceiptStatusImpl;
 import com.wadektech.chips.data.remote.source.PaymentDetailsServiceImpl;
-import com.wadektech.chips.data.remote.source.TransactionDetailsServiceImpl;
-import com.wadektech.chips.utils.App;
+import com.wadektech.chips.data.remote.source.PaymentReceiptStatusImpl;
 import com.wadektech.chips.utils.FirebaseRealtimeDatabaseQueryLiveData;
-
-import java.util.List;
-
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -79,45 +67,6 @@ public class RemoteRepository {
                     @Override
                     public void onError(Throwable e) {
                         Timber.d("Response error status for payment details is %s", e.getMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
-    /**
-     * This function fetches all transactions from chips server asynchronously then caches it locally to be
-     * accessed by user, needs to retrieve the details of the transaction related to a previously submitted request.
-     */
-    public void fetchTransactionDetailsFromRemote(){
-        Observable<List<TransactionDetails>> transactionDetailsObservable = TransactionDetailsServiceImpl
-                .getINSTANCE()
-                .getTransactionRequestDetails()
-                .getTransactionDetailsAsync(key);
-        transactionDetailsObservable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Observer<List<TransactionDetails>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<TransactionDetails> transactionDetails) {
-                        Timber.d("Transactions onNext(): %s", transactionDetails.size());
-                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference transactionsRef =  rootRef.child("TransactionsDetails");
-                        transactionsRef.setValue(transactionDetails);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.d("Response error status for transaction details is %s", e.getMessage());
                     }
 
                     @Override
@@ -234,9 +183,10 @@ public class RemoteRepository {
         final DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("PaymentsDetails").child("values");
         return new FirebaseRealtimeDatabaseQueryLiveData<>(PaymentDetails.class, dRef);
     }
-
+/*
     public FirebaseRealtimeDatabaseQueryLiveData<TransactionDetails> getAllTransactionDetailsFromDB(){
         final DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("TransactionsDetails");
         return new FirebaseRealtimeDatabaseQueryLiveData<>(TransactionDetails.class, dRef);
     }
+ **/
 }
