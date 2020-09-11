@@ -1,10 +1,5 @@
 package com.wadektech.chips.ui;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Build;
@@ -13,43 +8,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
-
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.wadektech.chips.R;
-import com.wadektech.chips.data.RemoteRepository;
 import com.wadektech.chips.data.local.models.TransactionDetails;
 import com.wadektech.chips.data.remote.source.TransactionDetailsServiceImpl;
-import com.wadektech.chips.databinding.ActivityTransactionsDetailsBinding;
 import com.wadektech.chips.utils.SnackBarUtilsKt;
-
-import java.util.List;
-
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class TransactionsDetailsActivity extends AppCompatActivity {
-    ActivityTransactionsDetailsBinding binding;
-    ChipsViewModel chipsViewModel;
-    String key = " Basic YWE0MjkxZWItMjczOC00ZWQ2LTg3OTItZjc5MTkyMTNiNTExOjM0YzFiYTQ0LWFkNGYtNGNhMy1hMzhiLTRmYTcyNjIyZmFhNA==";
 
+public class TransactionsDetailsActivity extends AppCompatActivity {
+    String key = " Basic YWE0MjkxZWItMjczOC00ZWQ2LTg3OTItZjc5MTkyMTNiNTExOjM0YzFiYTQ0LWFkNGYtNGNhMy1hMzhiLTRmYTcyNjIyZmFhNA==";
+    SearchView transSearch ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_transactions_details);
+        setContentView(R.layout.activity_transactions_details);
 
-        chipsViewModel = new ViewModelProvider(this).get(ChipsViewModel.class);
-        binding.setLifecycleOwner(this);
-        binding.setViewModel(chipsViewModel);
-        ChipsTransactionsAdapter chipsTransactionsAdapter = new ChipsTransactionsAdapter();
-        binding.rvTransactions.setAdapter(chipsTransactionsAdapter);
-
-        binding.transSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        transSearch = findViewById(R.id.trans_search);
+        transSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if (query != null){
@@ -65,6 +49,10 @@ public class TransactionsDetailsActivity extends AppCompatActivity {
         });
     }
 
+  /**
+   * This function fetches all transactions from chips server asynchronously then caches it locally to be
+   * accessed by user, needs to retrieve the details of the transaction related to a previously submitted request.
+   */
    public void getTransactionDetailsBySiteRefInfo(String siteRef){
        ProgressDialog dialog = new ProgressDialog(TransactionsDetailsActivity.this, R.style.DialogStyle);
        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);

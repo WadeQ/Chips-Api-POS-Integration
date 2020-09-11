@@ -1,7 +1,6 @@
 package com.wadektech.chips.data.remote.source;
 
 import com.wadektech.chips.data.local.models.TransactionDetails;
-import java.util.List;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -14,12 +13,6 @@ import retrofit2.http.Path;
  * the criteria, zero or more results will be returned.
  */
 public interface TransactionDetailsService {
-
-    @Headers({ "Content-Type: application/json;charset=UTF-8"})
-    @GET("transactions")
-    Observable<List<TransactionDetails>> getTransactionDetailsAsync(
-            @Header("Authorization") String authKey
-    );
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("transactions/{siteRef}")

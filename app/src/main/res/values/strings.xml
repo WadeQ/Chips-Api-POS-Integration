@@ -8,4 +8,12 @@
     <string name="item_amount">Item amount</string>
     <string name="payee_reference">Payee reference</string>
     <string name="item_desc">\"Item Description: \"</string>
+    <string name="amount_shown">Amount $358</string>
+    <string name="item_dec">Basket</string>
+    <string name="expiry_date">22-12-12</string>
+    <string name="site_ref">Site Ref</string>
+    <string name="trans_amount">Amount</string>
+    <string name="trans_button_proceed">Proceed</string>
+    <string name="transactions_history">Transactions History</string>
+    <string name="trans_payments_history">Payments History</string>
 </resources>
