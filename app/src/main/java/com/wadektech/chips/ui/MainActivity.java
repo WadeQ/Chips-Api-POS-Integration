@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
@@ -16,13 +15,13 @@ import com.wadektech.chips.R;
 import com.wadektech.chips.data.remote.models.TokenReqDto;
 import com.wadektech.chips.data.remote.models.TokenResDto;
 import com.wadektech.chips.data.remote.source.PaymentRequestServiceImpl;
-
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
+
 
 public class MainActivity extends AppCompatActivity {
     Button confirmTransaction, mTransactions, mPayments;
@@ -89,18 +88,19 @@ public class MainActivity extends AppCompatActivity {
         dialog.setMessage("Please be patient as we process your request");
         dialog.show();
         TokenReqDto req  = new TokenReqDto();
-        req.setRequestId("test234");
-        req.setDueDate("2020-08-29");
-        req.setDescription("Iron box");
-        req.setExpiryTime("2020-08-30T09:05:41.366Z");
+        req.setRequestId("ee94c6cb-f068-4c63-a4fb-2cb2764865d5");
+        req.setDueDate("2020-09-12");
+        req.setDescription("Once off code");
+        req.setExpiryTime("2020-09-30T09:05:41.366Z");
         req.setAmount(Double.parseDouble(amt));
-        req.setPayeeRefInfo("324567865432");
+        req.setPayeeRefInfo("d86941ad-b28b-432d-89c2-d189b2a46220");
         req.setPayeeCategory1("string");
         req.setPayeeCategory2("string");
         req.setPayeeCategory3("string");
-        req.setSiteName("string");
-        req.setSiteRefInfo("324567865432");
+        req.setSiteName("Test");
+        req.setSiteRefInfo("MpRequest");
         req.setRequestTip(false);
+        req.setUseOnce(true);
         req.setUseOnce(true);
         req.setNotifyUrl("https://us-central1-chips-d4dae.cloudfunctions.net/updateStatus");
         req.setRequestTokenImage(true);
@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onNext(TokenResDto tokenResDto) {
                     dialog.dismiss();
+                    if (tokenResDto != null){
                         Timber.d("Response status code is %s", tokenResDto.getStatus());
                         String encodedQr = tokenResDto.getTokenImage();
                         Double amount = tokenResDto.getAmount();
@@ -137,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("amount",amount);
                         intent.putExtra("siteRef",siteRefInfo);
                         startActivity(intent);
+                    }
 
                     }
 

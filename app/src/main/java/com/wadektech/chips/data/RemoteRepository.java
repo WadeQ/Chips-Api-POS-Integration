@@ -6,11 +6,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.wadektech.chips.data.local.models.PaymentDetails;
 import com.wadektech.chips.data.local.models.Payments;
-import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionReq;
-import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionRes;
+import com.wadektech.chips.data.remote.models.PaymentReceiptReq;
+import com.wadektech.chips.data.remote.models.PaymentReceiptRes;
 import com.wadektech.chips.data.remote.source.PaymentDetailsServiceImpl;
 import com.wadektech.chips.data.remote.source.PaymentReceiptStatusImpl;
 import com.wadektech.chips.utils.FirebaseRealtimeDatabaseQueryLiveData;
+
+import java.util.HashMap;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -138,7 +141,7 @@ public class RemoteRepository {
    * successful card payment. This will enable CHIPS® to allocate the received funds to the involved CHIPS® account.
    */
   public void getPaymentCompletionStatus(){
-    MerchantPaymentCompletionReq req = new MerchantPaymentCompletionReq();
+    PaymentReceiptReq req = new PaymentReceiptReq();
     req.setAmount(2000);
     req.setBankRefInfo("string");
     req.setGratuityAmount(100);
@@ -148,7 +151,7 @@ public class RemoteRepository {
     req.setTokenId("string");
     req.setPayeeRefInfo("string");
 
-    Observable<MerchantPaymentCompletionRes> merchantPaymentCompletionResObservable = PaymentReceiptStatusImpl
+    Observable<PaymentReceiptRes> merchantPaymentCompletionResObservable = PaymentReceiptStatusImpl
         .getINSTANCE()
         .getPaymentReceipt()
         .notifyPaymentCompletionWithReceipt(key,req);
@@ -156,15 +159,25 @@ public class RemoteRepository {
     merchantPaymentCompletionResObservable.subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .unsubscribeOn(Schedulers.io())
-        .subscribe(new Observer<MerchantPaymentCompletionRes>() {
+        .subscribe(new Observer<PaymentReceiptRes>() {
           @Override
           public void onSubscribe(Disposable d) {
           }
 
           @Override
-          public void onNext(MerchantPaymentCompletionRes completionRes) {
+          public void onNext(PaymentReceiptRes completionRes) {
             //TO-DO implementation for successful payment request
-            Timber.d("Response status code for merchant completion status is %s",completionRes.getStatus());
+            if (completionRes != null){
+              //update transaction status node in firebase
+              DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+              DatabaseReference transRef =  rootRef.child("transactions").child(completionRes.getTokenId());
+              HashMap<String, Object> hashMap = new HashMap<>();
+              hashMap.put(completionRes.getTokenId(), completionRes.getTokenId());
+
+
+              Timber.d("Response status code for merchant completion status is %s",completionRes.getStatus());
+            }
+
           }
 
           @Override
@@ -183,10 +196,4 @@ public class RemoteRepository {
         final DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("PaymentsDetails").child("values");
         return new FirebaseRealtimeDatabaseQueryLiveData<>(PaymentDetails.class, dRef);
     }
-/*
-    public FirebaseRealtimeDatabaseQueryLiveData<TransactionDetails> getAllTransactionDetailsFromDB(){
-        final DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("TransactionsDetails");
-        return new FirebaseRealtimeDatabaseQueryLiveData<>(TransactionDetails.class, dRef);
-    }
- **/
 }

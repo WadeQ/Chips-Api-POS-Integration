@@ -4,13 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.wadektech.chips.R;
 import com.wadektech.chips.data.local.models.TransactionDetails;
 import com.wadektech.chips.data.remote.source.TransactionDetailsServiceImpl;
@@ -26,11 +23,19 @@ import timber.log.Timber;
 public class TransactionsDetailsActivity extends AppCompatActivity {
     String key = " Basic YWE0MjkxZWItMjczOC00ZWQ2LTg3OTItZjc5MTkyMTNiNTExOjM0YzFiYTQ0LWFkNGYtNGNhMy1hMzhiLTRmYTcyNjIyZmFhNA==";
     SearchView transSearch ;
+    TextView requestId,feeAmount,vatAmount,gratuityAmount,payeeSiteRefInfo,amount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transactions_details);
+
+        feeAmount = findViewById(R.id.tv_fee_amt);
+        vatAmount = findViewById(R.id.tv_vat_amt);
+        amount = findViewById(R.id.tv_amt);
+        gratuityAmount = findViewById(R.id.tv_gratuity_amt);
+        payeeSiteRefInfo = findViewById(R.id.tv_payee_ref_info);
+        requestId = findViewById(R.id.tv_request_id);
 
         transSearch = findViewById(R.id.trans_search);
         transSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -38,6 +43,8 @@ public class TransactionsDetailsActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 if (query != null){
                     getTransactionDetailsBySiteRefInfo(query);
+                    transSearch.setQuery("",false);
+                    transSearch.clearFocus();
                 }
                 return false;
             }
@@ -47,11 +54,13 @@ public class TransactionsDetailsActivity extends AppCompatActivity {
                 return false;
             }
         });
+
     }
 
   /**
    * This function fetches all transactions from chips server asynchronously then caches it locally to be
    * accessed by user, needs to retrieve the details of the transaction related to a previously submitted request.
+   * @param siteRef
    */
    public void getTransactionDetailsBySiteRefInfo(String siteRef){
        ProgressDialog dialog = new ProgressDialog(TransactionsDetailsActivity.this, R.style.DialogStyle);
@@ -61,7 +70,7 @@ public class TransactionsDetailsActivity extends AppCompatActivity {
        dialog.show();
        Observable<TransactionDetails> transactionDetailsObservable = TransactionDetailsServiceImpl
            .getINSTANCE()
-           .getTransactionRequestDetails()
+           .getFilteredTransactionRequestDetails()
            .getTransactionDetailsBySiteRefAsync(key,siteRef);
        transactionDetailsObservable.subscribeOn(Schedulers.io())
            .observeOn(AndroidSchedulers.mainThread())
@@ -78,30 +87,12 @@ public class TransactionsDetailsActivity extends AppCompatActivity {
                 dialog.dismiss();
                  //display queried transaction result using a bottom sheet dialog
                  if (transactionDetails != null){
-                   BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(TransactionsDetailsActivity.this,
-                       R.style.BottomSheetDialogTheme);
-                   View view = LayoutInflater.from(getApplicationContext())
-                       .inflate(R.layout.layout_bottom_sheet_dialog,findViewById(R.id.bottom_sheet_dialog),false);
-                   TextView requestId = view.findViewById(R.id.tv_amount_details);
-
                    requestId.setText("Transaction Request id: "+transactionDetails.getRequestId());
-                   TextView feeAmount = view.findViewById(R.id.tv_token_id_details);
                    feeAmount.setText("Transaction Fee Amount: "+transactionDetails.getFeeAmount());
-                   TextView vatAmount = view.findViewById(R.id.tv_status_details);
                    vatAmount.setText("Transactions VAT Amount: "+transactionDetails.getFeeVatAmount());
-                   TextView amount = view.findViewById(R.id.tv_payee_ref_details);
                    amount.setText("Transaction Amount: "+transactionDetails.getAmount());
-                   TextView gratuityAmount = view.findViewById(R.id.tv_expiry_time_details);
                    gratuityAmount.setText("Transactions Gratuity Amount: "+transactionDetails.getGratuityAmount());
-                   TextView payeeSiteRefInfo = view.findViewById(R.id.tv_description_details);
                    payeeSiteRefInfo.setText("Transactions PayeeSiteRefInfo: "+transactionDetails.getPayeeSiteRefInfo());
-
-                   view.setOnClickListener(view1 -> {
-                     dialog.dismiss();
-                   });
-
-                   bottomSheetDialog.setContentView(view);
-                   bottomSheetDialog.show();
                  }
                }
 
@@ -111,8 +102,8 @@ public class TransactionsDetailsActivity extends AppCompatActivity {
                  dialog.dismiss();
                  Timber.d("getTransactionDetailsBySiteRefInfo :error status is %s", e.getMessage());
                  SnackBarUtilsKt.snackbar(requireViewById(R.id.trans_activity),
-                     "Error getting queried transaction details, make sure the site reference used is the correct one...");
-
+                     "Error getting queried transaction details, " +
+                         "make sure the site reference used is the correct one and you have a stable internet connection...");
                }
 
                @Override

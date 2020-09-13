@@ -51,6 +51,8 @@ public class PaymentsDetailsActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String tokenId) {
                 if (tokenId != null){
                     getPaymentDetailsByTokenIdFromRemote(tokenId);
+                    binding.searchView.setQuery("",false);
+                    binding.searchView.clearFocus();
                 }
                 return false;
             }

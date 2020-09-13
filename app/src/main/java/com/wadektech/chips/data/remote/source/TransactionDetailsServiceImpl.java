@@ -30,7 +30,7 @@ public class TransactionDetailsServiceImpl {
         return INSTANCE;
     }
 
-    public TransactionDetailsService getTransactionRequestDetails(){
+    public TransactionDetailsService getFilteredTransactionRequestDetails(){
         return retrofit.create(TransactionDetailsService.class);
     }
 }
