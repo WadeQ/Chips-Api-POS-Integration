@@ -2,6 +2,7 @@ package com.wadektech.chips.data;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.wadektech.chips.data.local.models.PaymentDetails;
@@ -11,9 +12,6 @@ import com.wadektech.chips.data.remote.models.PaymentReceiptRes;
 import com.wadektech.chips.data.remote.source.PaymentDetailsServiceImpl;
 import com.wadektech.chips.data.remote.source.PaymentReceiptStatusImpl;
 import com.wadektech.chips.utils.FirebaseRealtimeDatabaseQueryLiveData;
-
-import java.util.HashMap;
-
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -166,23 +164,16 @@ public class RemoteRepository {
 
           @Override
           public void onNext(PaymentReceiptRes completionRes) {
-            //TO-DO implementation for successful payment request
+            //TO-DO implementation for successful payment completion receipt
             if (completionRes != null){
-              //update transaction status node in firebase
-              DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-              DatabaseReference transRef =  rootRef.child("transactions").child(completionRes.getTokenId());
-              HashMap<String, Object> hashMap = new HashMap<>();
-              hashMap.put(completionRes.getTokenId(), completionRes.getTokenId());
-
-
-              Timber.d("Response status code for merchant completion status is %s",completionRes.getStatus());
+              Timber.d("Response status code for payment completion status is %s",completionRes.getStatus());
             }
 
           }
 
           @Override
           public void onError(Throwable e) {
-            Timber.d("Response error status for merchant completion is %s", e.getMessage());
+            Timber.d("Response error status for payment completion is %s", e.getMessage());
           }
 
           @Override

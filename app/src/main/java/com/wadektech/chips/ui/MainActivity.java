@@ -7,14 +7,20 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.wadektech.chips.R;
 import com.wadektech.chips.data.remote.models.TokenReqDto;
 import com.wadektech.chips.data.remote.models.TokenResDto;
 import com.wadektech.chips.data.remote.source.PaymentRequestServiceImpl;
+import com.wadektech.chips.utils.SnackBarUtilsKt;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -121,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
 
+                    @RequiresApi(api = Build.VERSION_CODES.P)
                     @Override
                     public void onNext(TokenResDto tokenResDto) {
                     dialog.dismiss();
@@ -131,11 +138,18 @@ public class MainActivity extends AppCompatActivity {
                         String requestID = tokenResDto.getRequestId();
                         String tokenID = tokenResDto.getTokenId();
                         String siteRefInfo = tokenResDto.getPayeeRefInfo();
+                        String status = tokenResDto.getStatus();
+
+                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference paymentsReqRef =  rootRef.child("transactions").child(tokenID);
+                        paymentsReqRef.setValue(tokenResDto);
+
                         Intent intent = new Intent(getApplicationContext(), TokensDetailsActivity.class);
                         intent.putExtra("encoded_image",encodedQr);
                         intent.putExtra("requestId",requestID);
                         intent.putExtra("tokenId",tokenID);
                         intent.putExtra("amount",amount);
+                        intent.putExtra("status", status);
                         intent.putExtra("siteRef",siteRefInfo);
                         startActivity(intent);
                     }

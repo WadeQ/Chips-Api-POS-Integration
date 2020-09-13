@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+
 public class TokenResDto implements Parcelable {
     @SerializedName("uuid")
     @Expose
