@@ -54,7 +54,6 @@ public class FirebaseRealtimeDatabaseQueryLiveData<T> extends LiveData<List<T>> 
                 list.add(snapshot.getValue(type));
             }
         }
-
         return list ;
     }
 }

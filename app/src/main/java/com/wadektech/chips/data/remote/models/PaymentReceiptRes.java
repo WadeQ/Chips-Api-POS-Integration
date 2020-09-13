@@ -3,7 +3,7 @@ package com.wadektech.chips.data.remote.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MerchantPaymentCompletionRes {
+public class PaymentReceiptRes {
     @SerializedName("amount")
     @Expose
     private Integer amount;
@@ -50,11 +50,11 @@ public class MerchantPaymentCompletionRes {
     @Expose
     private String tokenId;
 
-    public MerchantPaymentCompletionRes(Integer amount, String bankRefInfo, String description,
-                                        Integer gratuityAmount, String payeeAccountUuid, String payeeRefInfo,
-                                        String payeeSiteName, String payeeSiteRefInfo, String payerRefInfo,
-                                        String paymentDate, String reason, String requestId, String status,
-                                        String systemRefInfo, String tokenId) {
+    public PaymentReceiptRes(Integer amount, String bankRefInfo, String description,
+                             Integer gratuityAmount, String payeeAccountUuid, String payeeRefInfo,
+                             String payeeSiteName, String payeeSiteRefInfo, String payerRefInfo,
+                             String paymentDate, String reason, String requestId, String status,
+                             String systemRefInfo, String tokenId) {
         this.amount = amount;
         this.bankRefInfo = bankRefInfo;
         this.description = description;

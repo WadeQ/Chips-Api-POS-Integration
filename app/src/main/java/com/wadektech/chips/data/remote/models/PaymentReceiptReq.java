@@ -3,7 +3,7 @@ package com.wadektech.chips.data.remote.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MerchantPaymentCompletionReq {
+public class PaymentReceiptReq {
     @SerializedName("amount")
     @Expose
     private Integer amount;

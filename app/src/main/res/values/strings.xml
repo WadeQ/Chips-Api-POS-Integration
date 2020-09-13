@@ -16,4 +16,10 @@
     <string name="trans_button_proceed">Proceed</string>
     <string name="transactions_history">Transactions History</string>
     <string name="trans_payments_history">Payments History</string>
+    <string name="fee_amount">Fee Amount</string>
+    <string name="vat_amount">VAT Amount</string>
+    <string name="amount">Amount</string>
+    <string name="gratuity_amount">Gratuity amount</string>
+    <string name="payee_ref_info">Payee Ref info</string>
+    <string name="request_id">Request ID</string>
 </resources>

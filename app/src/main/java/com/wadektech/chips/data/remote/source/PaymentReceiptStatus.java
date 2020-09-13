@@ -1,7 +1,7 @@
 package com.wadektech.chips.data.remote.source;
 
-import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionReq;
-import com.wadektech.chips.data.remote.models.MerchantPaymentCompletionRes;
+import com.wadektech.chips.data.remote.models.PaymentReceiptReq;
+import com.wadektech.chips.data.remote.models.PaymentReceiptRes;
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
@@ -15,8 +15,8 @@ import retrofit2.http.POST;
 public interface PaymentReceiptStatus {
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @POST("payments")
-    Observable<MerchantPaymentCompletionRes> notifyPaymentCompletionWithReceipt(
+    Observable<PaymentReceiptRes> notifyPaymentCompletionWithReceipt(
             @Header("Authorization") String authKey,
-            @Body MerchantPaymentCompletionReq merchantPaymentCompletionReq
+            @Body PaymentReceiptReq paymentReceiptReq
     );
 }

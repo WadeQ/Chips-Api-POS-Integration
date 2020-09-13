@@ -45,10 +45,11 @@ public class TokensDetailsActivity extends AppCompatActivity {
         requestId = intent.getStringExtra("requestId");
         tokenId = intent.getStringExtra("tokenId");
         siteRefInfo = intent.getStringExtra("siteRef");
+        String status = intent.getStringExtra("status");
         assert encoded_image!= null;
         Bitmap image = decodeImage(encoded_image);
         qrCodeImage.setImageBitmap(image);
-        Toast.makeText(getBaseContext(), "qr code success", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getBaseContext(), "qr code success: "+status, Toast.LENGTH_LONG).show();
 
        responseText.setText("Amount: "+amount);
        mDate.setText("Token ID: "+tokenId);
