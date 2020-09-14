@@ -141,14 +141,14 @@ public class MainActivity extends AppCompatActivity {
                         String siteRefInfo = tokenResDto.getPayeeRefInfo();
 
                         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference paymentsReqRef =  rootRef.child("transactions").child(tokenID);
+                        DatabaseReference paymentsReqRef =  rootRef.child("transactions").child("payments");
                         paymentsReqRef.setValue(tokenResDto);
 
                         Intent intent = new Intent(getApplicationContext(), TokensDetailsActivity.class);
                         intent.putExtra("encoded_image",encodedQr);
                         intent.putExtra("requestId",requestID);
-                        //intent.putExtra("tokenId",tokenID);
-                        //intent.putExtra("amount",amount);
+                        intent.putExtra("tokenId",tokenID);
+                        intent.putExtra("amount",amount);
                         intent.putExtra("siteRef",siteRefInfo);
                         startActivity(intent);
                     }
