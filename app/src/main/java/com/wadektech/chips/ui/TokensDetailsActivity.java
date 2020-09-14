@@ -57,30 +57,21 @@ public class TokensDetailsActivity extends AppCompatActivity {
         qrCodeImage.setImageBitmap(image);
         Toast.makeText(getBaseContext(), "qr code success: "+status, Toast.LENGTH_LONG).show();
 
-       //responseText.setText("Amount: "+amount);
-       //mDate.setText("Token ID: "+tokenId);
+       responseText.setText("Amount: "+amount);
+       mDate.setText("Token ID: "+tokenId);
        mDesc.setText("Request ID: "+requestId);
        mSiteRef.setText("SiteRefInfo: "+siteRefInfo);
-
 
         //initialize viewmodel
         ChipsViewModel chipsViewModel = ViewModelProviders.of(this).get(ChipsViewModel.class);
         LiveData<DataSnapshot> liveData = chipsViewModel.getPaymentsRequestDataSnapshotLiveData();
         liveData.observe(this, dataSnapshot -> {
-            if (dataSnapshot != null) {
-                long tokenId = dataSnapshot.getChildrenCount();
-                Timber.d("TokenActivityLiveData() : %s", tokenId);
-                // update the UI here with values in the snapshot
-                //TokenResDto tokenResDto = dataSnapshot.getValue(TokenResDto.class);
-                //assert tokenResDto != null;
-                //String tokenId = tokenResDto.getTokenId();
-                //mDate.setText("Token ID: "+tokenId);
-                //Double amount = tokenResDto.getAmount();
-                //responseText.setText("Amount: "+amount);
-            }else {
-                assert false;
-                Timber.d("TokenActivityLiveData() : %s", dataSnapshot.getChildrenCount());
-            }
+           if (dataSnapshot != null){
+               // update the UI here with values in the snapshot
+               for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                   Timber.d("DataSnapshot: %s", snapshot.getValue());
+               }
+           }
         });
 
     }
