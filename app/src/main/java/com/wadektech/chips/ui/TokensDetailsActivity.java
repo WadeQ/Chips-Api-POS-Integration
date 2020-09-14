@@ -10,7 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProviders;
+
+import com.google.firebase.database.DataSnapshot;
 import com.wadektech.chips.R;
+import com.wadektech.chips.data.remote.models.TokenResDto;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import timber.log.Timber;
@@ -51,10 +57,31 @@ public class TokensDetailsActivity extends AppCompatActivity {
         qrCodeImage.setImageBitmap(image);
         Toast.makeText(getBaseContext(), "qr code success: "+status, Toast.LENGTH_LONG).show();
 
-       responseText.setText("Amount: "+amount);
-       mDate.setText("Token ID: "+tokenId);
+       //responseText.setText("Amount: "+amount);
+       //mDate.setText("Token ID: "+tokenId);
        mDesc.setText("Request ID: "+requestId);
        mSiteRef.setText("SiteRefInfo: "+siteRefInfo);
+
+
+        //initialize viewmodel
+        ChipsViewModel chipsViewModel = ViewModelProviders.of(this).get(ChipsViewModel.class);
+        LiveData<DataSnapshot> liveData = chipsViewModel.getPaymentsRequestDataSnapshotLiveData();
+        liveData.observe(this, dataSnapshot -> {
+            if (dataSnapshot != null) {
+                long tokenId = dataSnapshot.getChildrenCount();
+                Timber.d("TokenActivityLiveData() : %s", tokenId);
+                // update the UI here with values in the snapshot
+                //TokenResDto tokenResDto = dataSnapshot.getValue(TokenResDto.class);
+                //assert tokenResDto != null;
+                //String tokenId = tokenResDto.getTokenId();
+                //mDate.setText("Token ID: "+tokenId);
+                //Double amount = tokenResDto.getAmount();
+                //responseText.setText("Amount: "+amount);
+            }else {
+                assert false;
+                Timber.d("TokenActivityLiveData() : %s", dataSnapshot.getChildrenCount());
+            }
+        });
 
     }
 
@@ -69,4 +96,5 @@ public class TokensDetailsActivity extends AppCompatActivity {
         }
         return null;
     }
+
 }

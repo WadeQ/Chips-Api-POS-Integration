@@ -1,5 +1,6 @@
 package com.wadektech.chips.ui;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
@@ -8,7 +9,6 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
@@ -16,11 +16,12 @@ import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.wadektech.chips.R;
+import com.wadektech.chips.data.remote.models.PaymentReceiptReq;
+import com.wadektech.chips.data.remote.models.PaymentReceiptRes;
 import com.wadektech.chips.data.remote.models.TokenReqDto;
 import com.wadektech.chips.data.remote.models.TokenResDto;
+import com.wadektech.chips.data.remote.source.PaymentReceiptStatusImpl;
 import com.wadektech.chips.data.remote.source.PaymentRequestServiceImpl;
-import com.wadektech.chips.utils.SnackBarUtilsKt;
-
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -138,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
                         String requestID = tokenResDto.getRequestId();
                         String tokenID = tokenResDto.getTokenId();
                         String siteRefInfo = tokenResDto.getPayeeRefInfo();
-                        String status = tokenResDto.getStatus();
 
                         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                         DatabaseReference paymentsReqRef =  rootRef.child("transactions").child(tokenID);
@@ -147,9 +147,8 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), TokensDetailsActivity.class);
                         intent.putExtra("encoded_image",encodedQr);
                         intent.putExtra("requestId",requestID);
-                        intent.putExtra("tokenId",tokenID);
-                        intent.putExtra("amount",amount);
-                        intent.putExtra("status", status);
+                        //intent.putExtra("tokenId",tokenID);
+                        //intent.putExtra("amount",amount);
                         intent.putExtra("siteRef",siteRefInfo);
                         startActivity(intent);
                     }
@@ -168,6 +167,59 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    /**
+     * This METHOD is called when the SmartPOS device needs to notify the CHIPS® Payment Network platform of a
+     * successful card payment. This will enable CHIPS® to allocate the received funds to the involved CHIPS® account.
+     */
+    public void getPaymentCompletionStatus(){
+        PaymentReceiptReq req = new PaymentReceiptReq();
+        req.setAmount(2000);
+        req.setBankRefInfo("string");
+        req.setGratuityAmount(100);
+        req.setPayeeAccountUuid("string");
+        req.setPayerRefInfo("string");
+        req.setRequestId("string");
+        req.setTokenId("string");
+        req.setPayeeRefInfo("string");
+
+        Observable<PaymentReceiptRes> merchantPaymentCompletionResObservable = PaymentReceiptStatusImpl
+            .getINSTANCE()
+            .getPaymentReceipt()
+            .notifyPaymentCompletionWithReceipt(key,req);
+
+        merchantPaymentCompletionResObservable.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .unsubscribeOn(Schedulers.io())
+            .subscribe(new Observer<PaymentReceiptRes>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+                }
+
+                @SuppressLint("ShowToast")
+                @Override
+                public void onNext(PaymentReceiptRes completionRes) {
+                    //TO-DO implementation for successful payment completion receipt
+                    if (completionRes != null){
+                        Toast.makeText(MainActivity.this, "Payment completion status: "+completionRes.getStatus(),
+                            Toast.LENGTH_LONG);
+                        Timber.d("Response status code for payment completion status is %s",completionRes.getStatus());
+                    }
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Timber.d("Response error status for payment completion is %s", e.getMessage());
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            });
+    }
+
 
     //Construct and send basic auth headers
    // public static String getAuthToken() {
