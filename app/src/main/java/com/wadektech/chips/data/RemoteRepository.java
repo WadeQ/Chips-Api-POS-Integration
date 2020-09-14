@@ -2,15 +2,11 @@ package com.wadektech.chips.data;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.wadektech.chips.data.local.models.PaymentDetails;
 import com.wadektech.chips.data.local.models.Payments;
-import com.wadektech.chips.data.remote.models.PaymentReceiptReq;
-import com.wadektech.chips.data.remote.models.PaymentReceiptRes;
 import com.wadektech.chips.data.remote.source.PaymentDetailsServiceImpl;
-import com.wadektech.chips.data.remote.source.PaymentReceiptStatusImpl;
 import com.wadektech.chips.utils.FirebaseRealtimeDatabaseQueryLiveData;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -134,54 +130,7 @@ public class RemoteRepository {
                 .build();
     }
 
-  /**
-   * This METHOD is called when the SmartPOS device needs to notify the CHIPS® Payment Network platform of a
-   * successful card payment. This will enable CHIPS® to allocate the received funds to the involved CHIPS® account.
-   */
-  public void getPaymentCompletionStatus(){
-    PaymentReceiptReq req = new PaymentReceiptReq();
-    req.setAmount(2000);
-    req.setBankRefInfo("string");
-    req.setGratuityAmount(100);
-    req.setPayeeAccountUuid("string");
-    req.setPayerRefInfo("string");
-    req.setRequestId("string");
-    req.setTokenId("string");
-    req.setPayeeRefInfo("string");
-
-    Observable<PaymentReceiptRes> merchantPaymentCompletionResObservable = PaymentReceiptStatusImpl
-        .getINSTANCE()
-        .getPaymentReceipt()
-        .notifyPaymentCompletionWithReceipt(key,req);
-
-    merchantPaymentCompletionResObservable.subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .unsubscribeOn(Schedulers.io())
-        .subscribe(new Observer<PaymentReceiptRes>() {
-          @Override
-          public void onSubscribe(Disposable d) {
-          }
-
-          @Override
-          public void onNext(PaymentReceiptRes completionRes) {
-            //TO-DO implementation for successful payment completion receipt
-            if (completionRes != null){
-              Timber.d("Response status code for payment completion status is %s",completionRes.getStatus());
-            }
-
-          }
-
-          @Override
-          public void onError(Throwable e) {
-            Timber.d("Response error status for payment completion is %s", e.getMessage());
-          }
-
-          @Override
-          public void onComplete() {
-
-          }
-        });
-  }
+ **/
 
     public FirebaseRealtimeDatabaseQueryLiveData<PaymentDetails> getAllPaymentDetailsFromDB(){
         final DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("PaymentsDetails").child("values");
