@@ -22,4 +22,6 @@
     <string name="gratuity_amount">Gratuity amount</string>
     <string name="payee_ref_info">Payee Ref info</string>
     <string name="request_id">Request ID</string>
+    <string name="scan_to_pay">SCAN TO PAY</string>
+    <string name="enabled_by">Enabled By</string>
 </resources>

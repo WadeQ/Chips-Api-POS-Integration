@@ -66,6 +66,9 @@ public class TokenResDto implements Parcelable {
     @Expose
     private String tokenImage;
 
+    public TokenResDto() {
+    }
+
     public TokenResDto(String uuid, String requestId, String created, String lastModified, String dueDate,
                        String description, String expiryTime, Double amount, String payeeCategory1,
                        String payeeCategory2, String payeeCategory3, String payeeRefInfo, String siteName,
@@ -164,6 +167,82 @@ public class TokenResDto implements Parcelable {
             return new TokenResDto[size];
         }
     };
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
+    }
+
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setExpiryTime(String expiryTime) {
+        this.expiryTime = expiryTime;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public void setPayeeCategory1(String payeeCategory1) {
+        this.payeeCategory1 = payeeCategory1;
+    }
+
+    public void setPayeeCategory2(String payeeCategory2) {
+        this.payeeCategory2 = payeeCategory2;
+    }
+
+    public void setPayeeCategory3(String payeeCategory3) {
+        this.payeeCategory3 = payeeCategory3;
+    }
+
+    public void setPayeeRefInfo(String payeeRefInfo) {
+        this.payeeRefInfo = payeeRefInfo;
+    }
+
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
+    }
+
+    public void setSiteRefInfo(String siteRefInfo) {
+        this.siteRefInfo = siteRefInfo;
+    }
+
+    public void setRequestTip(Boolean requestTip) {
+        this.requestTip = requestTip;
+    }
+
+    public void setUseOnce(Boolean useOnce) {
+        this.useOnce = useOnce;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
+    }
+
+    public void setTokenImage(String tokenImage) {
+        this.tokenImage = tokenImage;
+    }
 
     public String getUuid() {
         return uuid;

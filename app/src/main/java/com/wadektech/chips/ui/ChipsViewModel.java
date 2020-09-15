@@ -17,7 +17,7 @@ public class ChipsViewModel extends ViewModel {
     public FirebaseRealtimeDatabaseQueryLiveData<PaymentDetails> paymentDetailsList ;
     public FirebaseRealtimeDatabaseQueryLiveData<TransactionDetails> transactionDetailsList ;
     private static final DatabaseReference rootRef =
-        FirebaseDatabase.getInstance().getReference("transactions").child("payments");
+        FirebaseDatabase.getInstance().getReference("transactions");
     private final FirebaseQueryLiveData _paymentsListener = new FirebaseQueryLiveData(rootRef);
 
     public ChipsViewModel() {
