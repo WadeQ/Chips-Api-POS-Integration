@@ -14,7 +14,9 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.TransactionsDetailsActivity" />
         <activity android:name=".ui.PaymentsDetailsActivity" />
-        <activity android:name=".ui.TokensDetailsActivity" />
+        <activity
+            android:name=".ui.TokensDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

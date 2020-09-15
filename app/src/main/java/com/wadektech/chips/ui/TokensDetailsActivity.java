@@ -26,11 +26,6 @@ public class TokensDetailsActivity extends AppCompatActivity {
     TextView responseText, mSiteRef;
     TextView mDesc;
     TextView mDate;
-    String siteRefInfo;
-    String encoded_image;
-    Double amount;
-    String requestId;
-    String tokenId;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -40,27 +35,6 @@ public class TokensDetailsActivity extends AppCompatActivity {
 
         qrCodeImage = findViewById(R.id.qr_image);
         responseText = findViewById(R.id.tv_token_amount);
-        mDesc = findViewById(R.id.tv_token_desc);
-        mDate = findViewById(R.id.tv_token_date);
-        mSiteRef = findViewById(R.id.tv_site_ref);
-
-        //grab token from intent
-        Intent intent = getIntent();
-        encoded_image = intent.getStringExtra("encoded_image");
-        amount = intent.getDoubleExtra("amount",0);
-        requestId = intent.getStringExtra("requestId");
-        tokenId = intent.getStringExtra("tokenId");
-        siteRefInfo = intent.getStringExtra("siteRef");
-        String status = intent.getStringExtra("status");
-        assert encoded_image!= null;
-        Bitmap image = decodeImage(encoded_image);
-        qrCodeImage.setImageBitmap(image);
-        Toast.makeText(getBaseContext(), "qr code success: "+status, Toast.LENGTH_LONG).show();
-
-       responseText.setText("Amount: "+amount);
-       mDate.setText("Token ID: "+tokenId);
-       mDesc.setText("Request ID: "+requestId);
-       mSiteRef.setText("SiteRefInfo: "+siteRefInfo);
 
         //initialize viewmodel
         ChipsViewModel chipsViewModel = ViewModelProviders.of(this).get(ChipsViewModel.class);
@@ -69,11 +43,18 @@ public class TokensDetailsActivity extends AppCompatActivity {
            if (dataSnapshot != null){
                // update the UI here with values in the snapshot
                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                   Timber.d("DataSnapshot: %s", snapshot.getValue());
+                   TokenResDto tokenResDto = snapshot.getValue(TokenResDto.class);
+                   assert tokenResDto != null;
+                   Double amount = tokenResDto.getAmount();
+                   String encoded_image = tokenResDto.getTokenImage();
+                   assert encoded_image!= null;
+                   Bitmap image = decodeImage(encoded_image);
+                   qrCodeImage.setImageBitmap(image);
+                   responseText.setText("Amount: "+amount);
+                   Timber.d("DataSnapshot: %s", tokenResDto.getAmount());
                }
            }
         });
-
     }
 
     private Bitmap decodeImage(String baseString) {
