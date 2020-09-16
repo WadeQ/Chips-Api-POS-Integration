@@ -135,13 +135,15 @@ public class MainActivity extends AppCompatActivity {
             if (tokenResDto != null){
               Timber.d("Response status code is %s", tokenResDto.getStatus());
               String status = tokenResDto.getStatus();
+              String tokenId = tokenResDto.getTokenId();
 
               DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-              DatabaseReference paymentsReqRef =  rootRef.child("transactions").push();
+              DatabaseReference paymentsReqRef =  rootRef.child("transactions").child(tokenResDto.getTokenId());
               paymentsReqRef.setValue(tokenResDto);
 
               Intent intent = new Intent(getApplicationContext(), TokensDetailsActivity.class);
               intent.putExtra("status",status);
+              intent.putExtra("tokenId", tokenId);
               startActivity(intent);
             }
 

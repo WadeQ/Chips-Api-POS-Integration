@@ -4,18 +4,28 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.wadektech.chips.R;
 import com.wadektech.chips.data.remote.models.TokenResDto;
+import com.wadektech.chips.utils.SnackBarUtilsKt;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -23,10 +33,10 @@ import timber.log.Timber;
 
 public class TokensDetailsActivity extends AppCompatActivity {
     ImageView qrCodeImage;
-    TextView responseText, mSiteRef;
-    TextView mDesc;
-    TextView mDate;
+    TextView responseText;
 
+
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +62,12 @@ public class TokensDetailsActivity extends AppCompatActivity {
                    qrCodeImage.setImageBitmap(image);
                    responseText.setText("Amount: "+amount);
                    Timber.d("DataSnapshot: %s", tokenResDto.getAmount());
+
+                   if (tokenResDto.getStatus() != null){
+                       SnackBarUtilsKt.snackbar(requireViewById(R.id.token_activity), "Transaction status: "+tokenResDto.getStatus());
+                   } else{
+                       SnackBarUtilsKt.snackbar(requireViewById(R.id.token_activity), "Please wait for transaction completion status...");
+                   }
                }
            }
         });
